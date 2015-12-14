@@ -1,0 +1,18 @@
+#!/bin/bash
+if [ "$(readlink "$0")" == "" ]; then
+    pushd `dirname $0` > /dev/null
+    export POWERTRAIN_DIR=`pwd -P`
+    popd > /dev/null
+else
+    export POWERTRAIN_DIR=$(readlink "$0" | xargs dirname)
+fi
+
+if [ -n "$PROJECT_DIR" ] && [ -n "$(cat $PROJECT_DIR/Makefile)" ]; then
+    export PROJECT_DIR=$PROJECT_DIR
+elif [ -n "$(cat $(pwd)/Makefile)" ]; then
+    export PROJECT_DIR=$(pwd)
+else
+    export PROJECT_DIR=$POWERTRAIN_DIR
+fi
+
+make -C $PROJECT_DIR $@ POWERTRAIN_DIR=$POWERTRAIN_DIR PROJECT_DIR=$PROJECT_DIR
