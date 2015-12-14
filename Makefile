@@ -34,16 +34,25 @@ stop:
 	$(POWERTRAIN_DIR)/scripts/stop.sh $(NAME) $(VERSION) $(REGISTRY) $(VERSION_SCRIPT)
 
 stop-all:
-	make stop VERSION=all
+	$(MAKE) stop VERSION=all
 
 stop-old:
 	$(POWERTRAIN_DIR)/scripts/stopOld.sh $(NAME) $(VERSION) $(REGISTRY) $(VERSION_SCRIPT)
+
+kill:
+	$(POWERTRAIN_DIR)/scripts/kill.sh $(NAME) $(VERSION) $(REGISTRY) $(VERSION_SCRIPT)
+
+kill-all:
+	$(MAKE) kill VERSION=all
+
+kill-old:
+	$(POWERTRAIN_DIR)/scripts/killOld.sh $(NAME) $(VERSION) $(REGISTRY) $(VERSION_SCRIPT)
 
 rm:
 	$(POWERTRAIN_DIR)/scripts/rm.sh $(NAME) $(VERSION) $(REGISTRY) $(VERSION_SCRIPT)
 
 rm-all:
-	make rm VERSION=all
+	$(MAKE) rm VERSION=all
 
 rm-old:
 	$(POWERTRAIN_DIR)/scripts/rmOld.sh $(NAME) $(VERSION) $(REGISTRY) $(VERSION_SCRIPT)
