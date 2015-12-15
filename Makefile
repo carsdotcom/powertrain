@@ -7,8 +7,8 @@ SLEEP=10
 DEFAULT_PORT=1337
 RUN_SCRIPT=default
 VERSION_SCRIPT=default
-BUMP_SCRIPT=default
-VALIDATE_SCRIPT=default
+BUMP_VERSION_SCRIPT=default
+VALIDATE_ENV_SCRIPT=default
 
 help:
 	@echo "Please provide one or more goals..."
@@ -70,12 +70,12 @@ sleep:
 	@sleep $(SLEEP)
 
 bump-version:
-	$(POWERTRAIN_DIR)/scripts/bumpVersion.sh $(SEMVER) $(BUMP_SCRIPT)
+	$(POWERTRAIN_DIR)/scripts/bumpVersion.sh $(SEMVER) $(BUMP_VERSION_SCRIPT)
 
-validate:
-	$(POWERTRAIN_DIR)/scripts/validate.sh $(VALIDATE_SCRIPT)
+validate-env:
+	$(POWERTRAIN_DIR)/scripts/validateEnv.sh $(VALIDATE_ENV_SCRIPT)
 
-release: validate bump-version build publish
+release: validate-env build publish
 
 deploy: pull run sleep stop-old
 
@@ -97,6 +97,6 @@ deploy: pull run sleep stop-old
 .PHONY: rmi-old
 .PHONY: sleep
 .PHONY: bump-version
-.PHONY: validate
+.PHONY: validate-env
 .PHONY: release
 .PHONY: deploy
