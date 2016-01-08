@@ -9,7 +9,7 @@ in_array() {
     return 1
 }
 
-PORTS=$(docker inspect --format="{{(index (index .NetworkSettings.Ports \"$DEFAULT_PORT/tcp\") 0).HostPort}}" $(docker ps -q) 2> /dev/null)
+PORTS=$(docker inspect --format='{{range $p, $conf := .NetworkSettings.Ports}} {{(index $conf 0).HostPort}} {{end}}' $(docker ps -q) 2> /dev/null)
 NEXT_PORT=$DEFAULT_PORT
 
 while in_array $NEXT_PORT "${PORTS[@]}"; do
