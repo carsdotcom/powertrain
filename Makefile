@@ -75,6 +75,9 @@ bump-version:
 validate-env:
 	$(POWERTRAIN_DIR)/scripts/validateEnv.sh $(VALIDATE_ENV_SCRIPT)
 
+update-route: 
+	$(POWERTRAIN_DIR)/scripts/updateRoute.sh
+
 release: validate-env build publish
 
 deploy: pull run sleep stop-old
