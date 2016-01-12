@@ -15,4 +15,6 @@ else
     export PROJECT_DIR=$POWERTRAIN_DIR
 fi
 
+#TODO take $@ search through looking for --word=something and change to WORD=something
+
 make -C $PROJECT_DIR $@ POWERTRAIN_DIR=$POWERTRAIN_DIR PROJECT_DIR=$PROJECT_DIR

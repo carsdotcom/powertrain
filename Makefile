@@ -78,8 +78,17 @@ validate-env:
 docker-clean:
 	$(POWERTRAIN_DIR)/scripts/dockerCleanUp.sh
 
-update-route: 
-	$(POWERTRAIN_DIR)/scripts/updateRoute.sh
+machine-route: 
+	$(POWERTRAIN_DIR)/scripts/machineRoute.sh
+
+machine-create:
+	$(POWERTRAIN_DIR)/scripts/machineCreate.sh $(ENV)
+
+machine-env:
+	$(POWERTRAIN_DIR)/scripts/machineEnv.sh $(ENV)
+
+machine-port:
+	$(POWERTRAIN_DIR)/scripts/machinePort.sh $(ENV) $(ALIAS) $(PORT)
 
 release: validate-env build publish
 
