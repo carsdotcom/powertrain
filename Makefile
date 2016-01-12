@@ -75,6 +75,9 @@ bump-version:
 validate-env:
 	$(POWERTRAIN_DIR)/scripts/validateEnv.sh $(VALIDATE_ENV_SCRIPT)
 
+docker-clean:
+	$(POWERTRAIN_DIR)/scripts/dockerCleanUp.sh
+
 update-route: 
 	$(POWERTRAIN_DIR)/scripts/updateRoute.sh
 
@@ -103,3 +106,4 @@ deploy: pull run sleep stop-old
 .PHONY: validate-env
 .PHONY: release
 .PHONY: deploy
+.PHONY: docker-clean
