@@ -15,11 +15,17 @@ if [[ ! -z "${ARGS[2]}" ]]; then
     PORT=${ARGS[2]}
 fi
 
-echo "Stopping machine $MACHINE"
-docker-machine stop $MACHINE
+STATUS=`docker-machine status $MACHINE`
+
+if [[ "$STATUS" == "Running" ]]; then
+    echo "Stopping machine $MACHINE"
+    docker-machine stop $MACHINE
+fi
 
 echo "Adding port forward for port $PORT on machine $MACHINE with alias $ALIAS"
 VBoxManage modifyvm "$MACHINE" --natpf1 "$ALIAS,tcp,,$PORT,,$PORT"
 
-echo "Starting machine $MACHINE"
-docker-machine start $MACHINE
+if [[ "$STATUS" == "Running" ]]; then
+    echo "Starting machine $MACHINE"
+    docker-machine start $MACHINE
+fi
