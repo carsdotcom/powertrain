@@ -78,6 +78,9 @@ validate-env:
 docker-clean:
 	$(POWERTRAIN_DIR)/scripts/dockerCleanUp.sh
 
+machine-doctor:
+	$(POWERTRAIN_DIR)/scripts/machineDoctor.sh $(MACHINE)
+
 machine-route: 
 	$(POWERTRAIN_DIR)/scripts/machineRoute.sh
 
