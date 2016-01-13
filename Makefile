@@ -82,13 +82,13 @@ machine-route:
 	$(POWERTRAIN_DIR)/scripts/machineRoute.sh
 
 machine-create:
-	$(POWERTRAIN_DIR)/scripts/machineCreate.sh $(ENV)
+	$(POWERTRAIN_DIR)/scripts/machineCreate.sh $(MACHINE)
 
 machine-env:
-	$(POWERTRAIN_DIR)/scripts/machineEnv.sh $(ENV)
+	$(POWERTRAIN_DIR)/scripts/machineEnv.sh $(MACHINE)
 
 machine-port:
-	$(POWERTRAIN_DIR)/scripts/machinePort.sh $(ENV) $(ALIAS) $(PORT)
+	$(POWERTRAIN_DIR)/scripts/machinePort.sh $(MACHINE) $(ALIAS) $(PORT)
 
 release: validate-env build publish
 
