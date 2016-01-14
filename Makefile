@@ -127,3 +127,11 @@ deploy: pull run sleep stop-old
 .PHONY: release
 .PHONY: deploy
 .PHONY: docker-clean
+.PHONY: machine-route
+.PHONY: machine-create
+.PHONY: machine-start
+.PHONY: machine-stop
+.PHONY: machine-env
+.PHONY: machine-modify-port
+.PHONY: machine-port
+.PHONY: machine
