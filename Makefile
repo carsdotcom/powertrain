@@ -9,6 +9,9 @@ RUN_SCRIPT=default
 VERSION_SCRIPT=default
 BUMP_VERSION_SCRIPT=default
 VALIDATE_ENV_SCRIPT=default
+MACHINE_NAME=cars
+MACHINE_ALIAS=dockerhost
+MACHINE_PORT=2376
 
 help:
 	@echo "Please provide one or more goals..."
@@ -78,22 +81,27 @@ validate-env:
 docker-clean:
 	$(POWERTRAIN_DIR)/scripts/dockerCleanUp.sh
 
-machine-doctor:
-	$(POWERTRAIN_DIR)/scripts/machineDoctor.sh $(MACHINE)
-
 machine-route: 
 	$(POWERTRAIN_DIR)/scripts/machineRoute.sh
 
 machine-create:
-	$(POWERTRAIN_DIR)/scripts/machineCreate.sh $(MACHINE)
+	$(POWERTRAIN_DIR)/scripts/machineCreate.sh $(MACHINE_NAME)
+
+machine-start:
+	$(POWERTRAIN_DIR)/scripts/machineStart.sh $(MACHINE_NAME)
+
+machine-stop:
+	$(POWERTRAIN_DIR)/scripts/machineStop.sh $(MACHINE_NAME)
 
 machine-env:
-	$(POWERTRAIN_DIR)/scripts/machineEnv.sh $(MACHINE)
+	$(POWERTRAIN_DIR)/scripts/machineEnv.sh $(MACHINE_NAME)
 
-machine-port:
-	$(POWERTRAIN_DIR)/scripts/machinePort.sh $(MACHINE) $(ALIAS) $(PORT)
+machine-modify-port:
+	$(POWERTRAIN_DIR)/scripts/machinePort.sh $(MACHINE_NAME) $(MACHINE_ALIAS) $(MACHINE_PORT)
 
-release: validate-env build publish
+machine-port: machine-stop machine-modify-port machine-start
+
+machine: machine-create machine-port machine-route machine-start machine-env
 
 deploy: pull run sleep stop-old
 

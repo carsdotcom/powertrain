@@ -1,8 +1,8 @@
 #!/bin/bash
 
-VPN=`ifconfig -a | grep utun`
+VPN=$(ifconfig -a | grep utun)
 
-VBOX=`netstat -nr | grep vboxnet`
+VBOX=$(netstat -nr | grep vboxnet)
 
 if [[ -z "$VPN" && -z "$VBOX" ]]; then
     ifconfig -a | grep vboxnet | cut -d":" -f1 | while read interface; do

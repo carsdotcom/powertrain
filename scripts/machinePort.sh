@@ -1,31 +1,11 @@
 #!/bin/bash
 source $POWERTRAIN_DIR/var/ARGS.sh
+source $POWERTRAIN_DIR/var/MACHINE_NAME.sh ${ARGS[0]}
+source $POWERTRAIN_DIR/var/MACHINE_ALIAS.sh ${ARGS[1]}
+source $POWERTRAIN_DIR/var/MACHINE_PORT.sh ${ARGS[2]}
 
-MACHINE=dev
-ALIAS="vpnhost"
-PORT=2376
-
-if [[ ! -z "${ARGS[0]}" ]]; then
-    MACHINE=${ARGS[0]}
-fi
-if [[ ! -z "${ARGS[1]}" ]]; then
-    ALIAS=${ARGS[1]}
-fi
-if [[ ! -z "${ARGS[2]}" ]]; then
-    PORT=${ARGS[2]}
-fi
-
-STATUS=`docker-machine status $MACHINE`
-
-if [[ "$STATUS" == "Running" ]]; then
-    echo "Stopping machine $MACHINE"
-    docker-machine stop $MACHINE
-fi
-
-echo "Adding port forward for port $PORT on machine $MACHINE with alias $ALIAS"
-VBoxManage modifyvm "$MACHINE" --natpf1 "$ALIAS,tcp,,$PORT,,$PORT"
-
-if [[ "$STATUS" == "Running" ]]; then
-    echo "Starting machine $MACHINE"
-    docker-machine start $MACHINE
+FORWARD=$(VBoxManage showvminfo $MACHINE_NAME --details | grep "host port = $MACHINE_PORT")
+if [[ "$?" == "1" ]]; then
+    echo "Adding port forward for port $MACHINE_PORT on machine $MACHINE_NAME with alias $MACHINE_ALIAS"
+    VBoxManage modifyvm "$MACHINE_NAME" --natpf1 "$MACHINE_ALIAS,tcp,,$MACHINE_PORT,,$MACHINE_PORT"
 fi
