@@ -1,5 +1,4 @@
 #!/bin/bash
-
 #Breaking the pattern due to this script will be called thru eval thus it wont have the other items sourced in
 
 if [[ ! -z "$1" ]]; then
@@ -8,9 +7,16 @@ else
     MACHINE_NAME=cars
 fi
 
-VPN=$(ifconfig -a | grep utun)
+VPN="false"
+while read interface; do
+   FOO=$(ifconfig $interface | grep "inet 172")
+   if [ ! -z "$FOO" ]; then
+       VPN="true" 
+       break
+    fi
+done < <(ifconfig -a | grep utun | cut -d":" -f1 )
 
-if [[ ! -z "$VPN" ]]; then
+if [[ "$VPN" == "true" ]]; then
     echo 'export DOCKER_TLS_VERIFY="1"'
     echo 'export DOCKER_HOST="tcp://127.0.0.1:2376"'
     echo 'export DOCKER_CERT_PATH="`echo ~`/.docker/machine/machines/'$MACHINE_NAME'"'

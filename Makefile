@@ -84,7 +84,7 @@ docker-clean:
 machine-route: 
 	$(POWERTRAIN_DIR)/scripts/machineRoute.sh
 
-machine-create:
+machine-do-create:
 	$(POWERTRAIN_DIR)/scripts/machineCreate.sh $(MACHINE_NAME)
 
 machine-start:
@@ -101,7 +101,9 @@ machine-modify-port:
 
 machine-port: machine-stop machine-modify-port machine-start
 
-machine: machine-create machine-port machine-route machine-start machine-env
+machine-create: machine-do-create machine-port 
+
+machine: machine-route machine-start machine-env
 
 deploy: pull run sleep stop-old
 
