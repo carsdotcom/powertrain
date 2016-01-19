@@ -40,6 +40,9 @@ stop-all:
 	$(MAKE) stop VERSION=all
 
 stop-old:
+	$(POWERTRAIN_DIR)/scripts/stopOld.sh $(NAME) $(VERSION) $(REGISTRY) $(VERSION_SCRIPT) $(INSTANCES)
+
+stop-other:
 	$(POWERTRAIN_DIR)/scripts/stopOld.sh $(NAME) $(VERSION) $(REGISTRY) $(VERSION_SCRIPT)
 
 kill:
