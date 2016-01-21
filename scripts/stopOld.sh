@@ -9,9 +9,10 @@ TOTAL_INSTANCES="$(docker ps | grep "$REGISTRY""$NAME" | wc -l | awk '{print $1}
 OLD_INSTANCES=$((TOTAL_INSTANCES - INSTANCES))
 if [ "$OLD_INSTANCES" -ge 0 ]; then
     CONTAINERS="$(docker ps | grep "$REGISTRY""$NAME" | awk '{print $1}' | xargs docker inspect -f "{{.Created}} {{.Id}}" | sort -r | tail -n +$((INSTANCES + 1)) | awk '{print $2}')"
-    echo "Stopping the following containers:"
-    printf "$CONTAINERS"
-    printf "$CONTAINERS" | xargs docker stop
+    if [ -n "$CONTAINERS" ]; then
+        echo "Stopping the following containers:"
+        printf "$CONTAINERS" | xargs docker stop
+    fi
 else
     echo "No containers to stop."
 fi
