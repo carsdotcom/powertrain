@@ -1,4 +1,5 @@
 FROM ubuntu:latest
+
 MAINTAINER Mac Heller-Ogden <mheller-ogden@cars.com>
 
 ENV REFRESHED_AT 2015-12-10
