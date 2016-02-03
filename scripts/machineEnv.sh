@@ -25,6 +25,6 @@ if [[ "$VPN" == "true" ]]; then
     echo '# eval "$(powertrain machine-env MACHINE_NAME='$MACHINE_NAME')"'
 else
     echo '# Run this command to configure your shell:'
-    echo '# eval $(docker-machine env '$MACHINE_NAME')'
+    echo '# eval "$(docker-machine env '$MACHINE_NAME')"'
 fi
 
