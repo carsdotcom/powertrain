@@ -134,3 +134,34 @@ The above command will tag and push an image to our internal docker registry wit
 
 The defaults can be overridden by supplying the `NAME` and `VERSION` variables inline with the command like so: `powertrain publish NAME=www-cars-com-rendering VERSION=1.2.3`
 
+<br>
+
+### Machine Commands
+
+
+    powertrain machine-create
+
+This command will create a new machine with the default name of cars.  It will also setup port forwarding on the machine so that it can be used on and off the vpn.
+
+<br>
+
+    powertrain machine
+
+This command will help set up docker properly when switching to and from the VPN.  After the command executes it will provide the eval command that will be needed for configuring the Docker global variables.
+
+<br>
+    
+    powertrain machine-port MACHINE_ALIAS={alias} MACHINE_PORT={port}
+
+When on the VPN it is necessary to set up port forwarding so that when you need to access a port on Docker container it can be routed properly.  To create a new Port Forward using this command specifying a unique name for the rule ALIAS and the PORT number.
+
+<br>
+#### Machine Workflow
+    powertrain machine-create # One time deal
+    powertrain machine # Anytime switching on/off VPN. this will also provide the eval statement for setting up docker env variables
+    powertrain machine-port #Anytime needing a port opened
+
+
+
+
+
