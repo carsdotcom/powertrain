@@ -156,7 +156,8 @@ This command will help set up docker properly when switching to and from the VPN
 When on the VPN it is necessary to set up port forwarding so that when you need to access a port on Docker container it can be routed properly.  To create a new Port Forward using this command specifying a unique name for the rule ALIAS and the PORT number.
 
 <br>
-#### Machine Workflow
+
+### Machine Workflow
     powertrain machine-create # One time deal
     powertrain machine # Anytime switching on/off VPN. this will also provide the eval statement for setting up docker env variables
     powertrain machine-port #Anytime needing a port opened
