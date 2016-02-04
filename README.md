@@ -7,7 +7,6 @@ Powertrain is a basic orchestration tool for Docker built atop GNU Make.
 1. Clone this repo.
 2. Make the `powertrain` script executable.
 3. Get `powertrain` into your `$PATH` (either by adding a symlink to `./powertrain/powertrain` to an existing directory in your `$PATH` or by adding the repo directory to directory in your `$PATH`).
-4. Set `$POWERTRAIN` environment variable in your `.bashrc` or `.profile` to `./powertrain/Makefile`.
 
 
 ## Project Setup

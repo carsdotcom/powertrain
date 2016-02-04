@@ -6,6 +6,7 @@ if [ "$(readlink "$0")" == "" ]; then
 else
     export POWERTRAIN_DIR=$(readlink "$0" | xargs dirname)
 fi
+export POWERTRAIN=$POWERTRAIN_DIR/Makefile
 
 if [ -n "$PROJECT_DIR" ] && [ -n "$(cat $PROJECT_DIR/Makefile)" ]; then
     export PROJECT_DIR=$PROJECT_DIR
