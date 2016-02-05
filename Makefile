@@ -43,7 +43,7 @@ stop-old:
 	$(POWERTRAIN_DIR)/scripts/stopOld.sh $(NAME) $(VERSION) $(REGISTRY) $(VERSION_SCRIPT) $(INSTANCES)
 
 stop-other:
-	$(POWERTRAIN_DIR)/scripts/stopOld.sh $(NAME) $(VERSION) $(REGISTRY) $(VERSION_SCRIPT)
+	$(POWERTRAIN_DIR)/scripts/stopOther.sh $(NAME) $(VERSION) $(REGISTRY) $(VERSION_SCRIPT)
 
 kill:
 	$(POWERTRAIN_DIR)/scripts/kill.sh $(NAME) $(VERSION) $(REGISTRY) $(VERSION_SCRIPT)
@@ -54,14 +54,17 @@ kill-all:
 kill-old:
 	$(POWERTRAIN_DIR)/scripts/killOld.sh $(NAME) $(VERSION) $(REGISTRY) $(VERSION_SCRIPT)
 
+kill-other:
+	$(POWERTRAIN_DIR)/scripts/killOther.sh $(NAME) $(VERSION) $(REGISTRY) $(VERSION_SCRIPT)
+
 rm:
 	$(POWERTRAIN_DIR)/scripts/rm.sh $(NAME) $(VERSION) $(REGISTRY) $(VERSION_SCRIPT)
 
 rm-all:
 	$(MAKE) rm VERSION=all
 
-rm-old:
-	$(POWERTRAIN_DIR)/scripts/rmOld.sh $(NAME) $(VERSION) $(REGISTRY) $(VERSION_SCRIPT)
+rm-other:
+	$(POWERTRAIN_DIR)/scripts/rmOther.sh $(NAME) $(VERSION) $(REGISTRY) $(VERSION_SCRIPT)
 
 rmi:
 	$(POWERTRAIN_DIR)/scripts/rmi.sh $(NAME) $(VERSION) $(REGISTRY) $(VERSION_SCRIPT)
@@ -69,8 +72,8 @@ rmi:
 rmi-all:
 	make rmi VERSION=all
 
-rmi-old:
-	$(POWERTRAIN_DIR)/scripts/rmiOld.sh $(NAME) $(VERSION) $(REGISTRY) $(VERSION_SCRIPT)
+rmi-other:
+	$(POWERTRAIN_DIR)/scripts/rmiOther.sh $(NAME) $(VERSION) $(REGISTRY) $(VERSION_SCRIPT)
 
 sleep:
 	@sleep $(SLEEP)
@@ -120,12 +123,13 @@ deploy: pull run sleep stop-old
 .PHONY: stop
 .PHONY: stop-all
 .PHONY: stop-old
+.PHONY: stop-other
 .PHONY: rm
 .PHONY: rm-all
-.PHONY: rm-old
+.PHONY: rm-other
 .PHONY: rmi
 .PHONY: rmi-all
-.PHONY: rmi-old
+.PHONY: rmi-other
 .PHONY: sleep
 .PHONY: bump-version
 .PHONY: validate-env
