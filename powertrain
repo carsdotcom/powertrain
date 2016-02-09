@@ -8,14 +8,16 @@ else
 fi
 export POWERTRAIN=$POWERTRAIN_DIR/Makefile
 
-if [ -n "$PROJECT_DIR" ] && [ -n "$(cat $PROJECT_DIR/Makefile)" ]; then
+if [ -n "$PROJECT_DIR" ] && cat "$PROJECT_DIR/Makefile" > /dev/null 2>&1; then
     export PROJECT_DIR=$PROJECT_DIR
-elif [ -n "$(cat $(pwd)/Makefile)" ]; then
+    printf "Using Makefile as specified by \$PROJECT_DIR"
+elif cat $(pwd)/Makefile > /dev/null 2>&1; then
     export PROJECT_DIR=$(pwd)
+    printf "Using Makefile from current directory"
 else
     export PROJECT_DIR=$POWERTRAIN_DIR
+    printf "Using default Makefile"
 fi
-
-#TODO take $@ search through looking for --word=something and change to WORD=something
+printf " ($PROJECT_DIR/Makefile)\n\n"
 
 make -C $PROJECT_DIR $@ POWERTRAIN_DIR=$POWERTRAIN_DIR PROJECT_DIR=$PROJECT_DIR

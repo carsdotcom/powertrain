@@ -14,7 +14,7 @@ MACHINE_ALIAS=dockerhost
 MACHINE_PORT=2376
 
 help:
-	@echo "Please provide one or more goals..."
+	@echo "Please provide one or more goals...\n"
 
 run:
 	$(POWERTRAIN_DIR)/scripts/run.sh  $(NAME) $(VERSION) $(REGISTRY) $(INSTANCES) $(DEFAULT_PORT) $(RUN_SCRIPT) $(VERSION_SCRIPT)
