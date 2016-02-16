@@ -25,8 +25,6 @@ To get started with powertrain, add a Makefile to the root of your project direc
     DEFAULT_PORT=1337
     RUN_SCRIPT=$(CURDIR)/scripts/docker/run.sh
     VERSION_SCRIPT=$(CURDIR)/scripts/docker/var/VERSION.sh
-    BUMP_VERSION_SCRIPT=$(CURDIR)/scripts/docker/bumpVersion.sh
-    VALIDATE_ENV_SCRIPT=$(CURDIR)/scripts/docker/validateEnv.sh
 
 
 ## Usage
