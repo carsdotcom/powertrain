@@ -16,7 +16,7 @@ PLEASE NOTE: This project is in a very early stage and current only supports the
 To get started with powertrain, add a Makefile to the root of your project directory. This should be in the same directory as you Dockerfile. Here's an example of what a powertrain Makefile file might look like:
 
 
-    include /foo/powertrain/Makefile
+    include $(POWERTRAIN)
 
     NAME=my-application
     VERSION=default
