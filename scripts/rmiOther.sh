@@ -8,5 +8,5 @@ IMAGES="$(docker images | tail -n +2 | grep -v "${REGISTRY}${NAME}.*${VERSION}")
 if [ -n "$IMAGES" ]; then
     echo "Removing the following images:"
     printf "$IMAGES"
-    printf "$IMAGES" | awk '{print $3}' | xargs docker rmi
+    printf "$IMAGES" | awk '{print $3}' | xargs docker rmi -f
 fi

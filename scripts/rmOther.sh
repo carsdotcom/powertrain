@@ -7,5 +7,5 @@ CONTAINERS="$(docker ps -a | tail -n +2 | grep -v $REGISTRY""$IMAGE)"
 if [ -n "$CONTAINERS" ]; then
     echo "Removing the following containers:"
     printf "$CONTAINERS"
-    printf "$CONTAINERS" | awk '-f {print $1}' | xargs docker rm
+    printf "$CONTAINERS" | awk '{print $1}' | xargs docker rm -f
 fi
