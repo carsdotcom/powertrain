@@ -131,7 +131,7 @@ The above command will remove all images matching the target project's name.
 
 The above command will tag and push an image to our internal docker registry with a specified name and version number. If no arguments are provided, this will deploy an image with the name and version from the `package.json`.
 
-The defaults can be overridden by supplying the `NAME` and `VERSION` variables inline with the command like so: `powertrain publish NAME=www-cars-com-rendering VERSION=1.2.3`
+The defaults can be overridden by supplying the `NAME` and `VERSION` variables inline with the command like so: `powertrain publish NAME=my-application VERSION=1.2.3`
 
 <br>
 
