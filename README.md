@@ -2,6 +2,8 @@
 
 Powertrain is a basic orchestration tool for Docker built atop GNU Make.
 
+PLEASE NOTE: This project is in a very early stage and current only supports the specific use cases we've had so far. Support for more uses cases is under development.
+
 ## Install
 
 1. Clone this repo.
