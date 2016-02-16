@@ -15,7 +15,7 @@ MACHINE_PORT=2376
 
 .PHONY: help
 help:
-	@echo "Please provide one or more goals...\n"
+	@echo "Please provide one or more targets...\n"
 
 .PHONY: run
 run:
