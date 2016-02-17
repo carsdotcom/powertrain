@@ -6,6 +6,6 @@ source $POWERTRAIN_DIR/var/REGISTRY.sh ${ARGS[2]}
 CONTAINERS="$(docker ps -a | grep $REGISTRY""$IMAGE)"
 if [ -n "$CONTAINERS" ]; then
     echo "Removing the following containers:"
-    printf "$CONTAINERS"
-    printf "$CONTAINERS" | awk '{print $1}' | xargs docker rm -f
+    printf "$CONTAINERS\n"
+    docker rm -f $(printf "$CONTAINERS" | awk '{print $1}')
 fi

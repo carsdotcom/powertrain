@@ -10,5 +10,5 @@ else
 fi
 if [ -n "$CONTAINERS" ]; then
     echo "Running containers matching \"$REGISTRY""$IMAGE\"..."
-    printf "$CONTAINERS"
+    printf "$CONTAINERS\n"
 fi

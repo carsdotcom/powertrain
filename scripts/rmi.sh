@@ -7,6 +7,6 @@ source $POWERTRAIN_DIR/var/REGISTRY.sh ${ARGS[2]}
 IMAGES="$(docker images | grep "${REGISTRY}${NAME}.*${VERSION}")"
 if [ -n "$IMAGES" ]; then
     echo "Removing the following images:"
-    printf "$IMAGES"
-    printf "$IMAGES" | awk '{print $3}' | xargs docker rmi -f
+    printf "$IMAGES\n"
+    docker rmi -f $(printf "$IMAGES" | awk '{print $3}')
 fi

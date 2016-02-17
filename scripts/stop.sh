@@ -6,5 +6,5 @@ source $POWERTRAIN_DIR/var/REGISTRY.sh ${ARGS[2]}
 CONTAINERS="$(docker ps | grep $REGISTRY""$IMAGE)"
 if [ -n "$CONTAINERS" ]; then
     echo "Stopping \"$REGISTRY""$IMAGE\"..."
-    printf "$CONTAINERS" | awk '{print $1}' | xargs docker stop
+    docker stop $(printf "$CONTAINERS" | awk '{print $1}')
 fi

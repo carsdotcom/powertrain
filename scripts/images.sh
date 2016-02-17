@@ -7,5 +7,5 @@ source $POWERTRAIN_DIR/var/REGISTRY.sh ${ARGS[2]}
 IMAGES="$(docker images | grep "${REGISTRY}${NAME}.*${VERSION}")"
 if [ -n "$IMAGES" ]; then
     echo "Images matching \"$REGISTRY""$NAME:$VERSION\"..."
-    printf "$IMAGES"
+    printf "$IMAGES\n"
 fi

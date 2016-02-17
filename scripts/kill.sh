@@ -6,5 +6,5 @@ source $POWERTRAIN_DIR/var/REGISTRY.sh ${ARGS[2]}
 CONTAINERS="$(docker ps | grep $REGISTRY""$IMAGE)"
 if [ -n "$CONTAINERS" ]; then
     echo "Killing \"$REGISTRY""$IMAGE\"..."
-    printf "$CONTAINERS" | awk '{print $1}' | xargs docker kill
+    docker kill $(printf "$CONTAINERS" | awk '{print $1}')
 fi
