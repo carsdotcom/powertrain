@@ -106,7 +106,7 @@ rmi:
 
 .PHONY: rmi-all
 rmi-all:
-	make rmi VERSION=all
+	$(MAKE) rmi VERSION=all
 
 .PHONY: rmi-other
 rmi-other:
