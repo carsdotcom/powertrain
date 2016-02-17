@@ -112,6 +112,9 @@ rmi-all:
 rmi-other:
 	$(POWERTRAIN_DIR)/scripts/rmiOther.sh $(NAME) $(VERSION) $(REGISTRY) $(VERSION_SCRIPT)
 
+.PHONY: clean
+clean: stop-all rm-all rmi-all
+
 .PHONY: sleep
 sleep:
 	@sleep $(SLEEP)
