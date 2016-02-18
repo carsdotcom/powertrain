@@ -31,14 +31,18 @@ To get started with powertrain, add a Makefile to the root of your project direc
 
 ## Usage
 
-Chain together the goals documented below to create simple workflows. Override variables in-line with each command or in your projects powertrain Makefile.
+Chain together the "targets" ([more on GNU Make Targets here](http://www.gnu.org/software/make/manual/make.html#Phony-Targets)) documented below to create simple workflows. Override variables in-line with each command or in your projects powertrain Makefile.
 
-### Example
+### Basic Example
 
-    powertrain validate bump-version build publish run sleep stop-old INSTANCES=4 SLEEP=30
+    powertrain build run INSTANCES=4
+
+### Long-Chain Example
+
+    powertrain validate-env bump-version build tag push run sleep stop-old INSTANCES=4 SLEEP=30
 
 
-## Goals
+## Targets
 
 ### Build
 
@@ -129,9 +133,21 @@ The above command will remove all images matching the target project's name.
     powertrain publish
 
 
-The above command will tag and push an image to our internal docker registry with a specified name and version number. If no arguments are provided, this will deploy an image with the name and version from the `package.json`.
+The above command will tag and push an image to our internal docker registry with a specified name and version number. If no arguments are provided, this will deploy an image with the name from the project's Makefile and the current git commit hash (assuming your project is using git for version control).
 
 The defaults can be overridden by supplying the `NAME` and `VERSION` variables inline with the command like so: `powertrain publish NAME=my-application VERSION=1.2.3`
+
+<br>
+
+### Deploy
+
+
+    powertrain deploy
+
+
+The above command will pull an image from your docker registry and then execute a rolling restart of your containers. `deploy` is a composite target that execute the following targets: `pull run sleep stop-old`.
+
+The defaults can be overridden by supplying the `NAME` and `VERSION` variables inline with the command like so: `powertrain deploy NAME=my-application VERSION=1.2.3`
 
 <br>
 
