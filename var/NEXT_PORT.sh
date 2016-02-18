@@ -10,7 +10,7 @@ in_array() {
     return 1
 }
 
-PORTS=$(docker inspect --format='{{range $p, $conf := .NetworkSettings.Ports}} {{(index $conf 0).HostPort}} {{end}}' $(docker ps -q) 2> /dev/null |  tr -d ' ')
+PORTS=$(docker inspect --format='{{range $p, $conf := .NetworkSettings.Ports}} {{(index $conf 0).HostPort}} {{end}}' $(docker ps -q) 2> /dev/null |  tr -d ' ' | grep -v '^$')
 
 if [ -n "$RESERVED" ];
     then PORTS="$PORTS
