@@ -1,6 +1,5 @@
 #!/bin/bash
 source $POWERTRAIN_DIR/var/DEFAULT_PORT.sh $1
-RESERVED=$2
 
 in_array() {
     local needle=$1 arr=$2
@@ -11,11 +10,6 @@ in_array() {
 }
 
 PORTS=$(docker inspect --format='{{range $p, $conf := .NetworkSettings.Ports}} {{(index $conf 0).HostPort}} {{end}}' $(docker ps -q) 2> /dev/null |  tr -d ' ' | grep -v '^$')
-
-if [ -n "$RESERVED" ];
-    then PORTS="$PORTS
-$RESERVED";
-fi
 
 NEXT_PORT=$DEFAULT_PORT
 
