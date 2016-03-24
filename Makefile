@@ -1,8 +1,8 @@
 NAME=powertrain
 VERSION=default
+REGISTRY=repository.cars.com
 SEMVER=patch
 INSTANCES=1
-REGISTRY=repository.cars.com
 SLEEP=10
 DEFAULT_PORT=1337
 RUN_SCRIPT=default

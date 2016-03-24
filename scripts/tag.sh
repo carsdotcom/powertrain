@@ -1,7 +1,19 @@
 #!/bin/bash
 source $POWERTRAIN_DIR/var/ARGS.sh
 VERSION_SCRIPT=${ARGS[3]}
+source $POWERTRAIN_DIR/var/NAME.sh ${ARGS[0]}
+source $POWERTRAIN_DIR/var/VERSION.sh ${ARGS[1]}
 source $POWERTRAIN_DIR/var/IMAGE.sh ${ARGS[0]} ${ARGS[1]}
 source $POWERTRAIN_DIR/var/REGISTRY.sh ${ARGS[2]}
-echo "Tagging \"$IMAGE $REGISTRY""$IMAGE\"..."
-docker tag -f $REGISTRY""$IMAGE $REGISTRY""$IMAGE
+if [ -z "$TAG_REGISTRY" ]; then
+    TAG_REGISTRY=$REGISTRY
+fi
+if [ -z "$TAG_NAME" ]; then
+    TAG_NAME=$NAME
+fi
+if [ -z "$TAG_VERSION" ]; then
+    TAG_VERSION=$VERSION
+fi
+source $POWERTRAIN_DIR/var/TAG_IMAGE.sh $TAG_NAME $TAG_VERSION
+echo "Tagging $REGISTRY""$IMAGE $TAG_REGISTRY""$TAG_IMAGE"
+docker tag $REGISTRY""$IMAGE $TAG_REGISTRY""$TAG_IMAGE
