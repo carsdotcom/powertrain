@@ -112,9 +112,6 @@ rmi-all:
 rmi-other:
 	$(POWERTRAIN_DIR)/scripts/rmiOther.sh $(NAME) $(VERSION) $(REGISTRY) $(VERSION_SCRIPT)
 
-.PHONY: clean
-clean: stop-all rm-all rmi-all
-
 .PHONY: sleep
 sleep:
 	@sleep $(SLEEP)
@@ -127,9 +124,16 @@ bump-version:
 validate-env:
 	$(POWERTRAIN_DIR)/scripts/validateEnv.sh $(VALIDATE_ENV_SCRIPT)
 
-.PHONY: docker-clean
-docker-clean:
-	$(POWERTRAIN_DIR)/scripts/dockerCleanUp.sh
+.PHONY: rm-exited
+rm-exited:
+	$(POWERTRAIN_DIR)/scripts/rmExited.sh $(NAME) $(REGISTRY)
+
+.PHONY: rmi-dangling
+rmi-dangling:
+	$(POWERTRAIN_DIR)/scripts/rmiDangling.sh $(NAME) $(REGISTRY)
+
+.PHONY: clean
+clean: rm-exited rmi-dangling
 
 .PHONY: machine-route
 machine-route: 
@@ -165,4 +169,5 @@ machine-create: machine-do-create machine-port
 machine: machine-route machine-start machine-env
 
 .PHONY: deploy
-deploy: pull run sleep stop-old
+deploy: rm-exited pull run sleep stop-old
+
