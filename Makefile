@@ -21,6 +21,10 @@ help:
 run:
 	$(POWERTRAIN_DIR)/scripts/run.sh  $(NAME) $(VERSION) $(REGISTRY) $(INSTANCES) $(DEFAULT_PORT) $(RUN_SCRIPT) $(VERSION_SCRIPT)
 
+.PHONY: extract-run-script
+extract-run-script:
+	$(POWERTRAIN_DIR)/scripts/extractRunScript.sh  $(NAME) $(VERSION) $(REGISTRY) $(INSTANCES) $(RUN_SCRIPT) $(VERSION_SCRIPT)
+
 .PHONY: build
 build:
 	$(POWERTRAIN_DIR)/scripts/build.sh $(NAME) $(VERSION) $(REGISTRY) $(VERSION_SCRIPT) $(PROJECT_DIR)
