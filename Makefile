@@ -12,6 +12,7 @@ VALIDATE_ENV_SCRIPT=default
 MACHINE_NAME=cars
 MACHINE_ALIAS=dockerhost
 MACHINE_PORT=2376
+TARGET_DIR=$(PWD)
 
 .PHONY: help
 help:
@@ -23,7 +24,7 @@ run:
 
 .PHONY: extract-run-script
 extract-run-script:
-	$(POWERTRAIN_DIR)/scripts/extractRunScript.sh  $(NAME) $(VERSION) $(REGISTRY) $(INSTANCES) $(RUN_SCRIPT) $(VERSION_SCRIPT)
+	$(POWERTRAIN_DIR)/scripts/extractRunScript.sh  $(NAME) $(VERSION) $(REGISTRY) $(INSTANCES) $(RUN_SCRIPT) $(VERSION_SCRIPT) $(TARGET_DIR)
 
 .PHONY: build
 build:
