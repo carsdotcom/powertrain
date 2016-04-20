@@ -5,6 +5,8 @@ SEMVER=patch
 INSTANCES=1
 SLEEP=10
 DEFAULT_PORT=default
+PRE_BUILD_SCRIPT=default
+POST_BUILD_SCRIPT=default
 RUN_SCRIPT=default
 VERSION_SCRIPT=default
 BUMP_VERSION_SCRIPT=default
@@ -26,9 +28,20 @@ run:
 extract-run-script:
 	$(POWERTRAIN_DIR)/scripts/extractRunScript.sh  $(NAME) $(VERSION) $(REGISTRY) $(INSTANCES) $(RUN_SCRIPT) $(VERSION_SCRIPT) $(TARGET_DIR)
 
-.PHONY: build
-build:
+.PHONY: do-build
+do-build:
 	$(POWERTRAIN_DIR)/scripts/build.sh $(NAME) $(VERSION) $(REGISTRY) $(VERSION_SCRIPT) $(PROJECT_DIR)
+
+.PHONY: pre-build
+pre-build:
+	$(POWERTRAIN_DIR)/scripts/preBuild.sh $(PRE_BUILD_SCRIPT)
+
+.PHONY: post-build
+post-build:
+	$(POWERTRAIN_DIR)/scripts/postBuild.sh $(POST_BUILD_SCRIPT)
+
+.PHONY: build
+build: pre-build do-build post-build
 
 .PHONY: tag
 tag:
