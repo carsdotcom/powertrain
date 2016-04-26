@@ -15,7 +15,7 @@ runs Make using the Makefile found in that run context.
 * The default powertrain `Makefile` provides a set of default variables and
 targets.
 
-### How Powertrain Determines Run Context
+### How Powertrain Determines Run Context?
 
 If a `PROJECT_DIR` environment variable has been set, it will look for a
 `Makefile` at the location specified by that variable and use that `Makefile`;
@@ -60,18 +60,26 @@ the repo directory to directory in your `$PATH`).
 __See "Usage" section below for using `powertrain` with an existing project.__
 
 To get started with powertrain, add a Makefile to the root of your project
-directory. This should be in the same directory as you Dockerfile. Here's an
-example of what a powertrain Makefile file might look like:
+directory. This should be in the same directory as you Dockerfile.
+
+Here's an example of what the most basic powertrain Makefile file can look like:
 
 
     include $(POWERTRAIN)
 
     NAME=my-application
-    VERSION=default
-    SEMVER=patch
-    INSTANCES=1
+
+
+That's all. For some basic use cases, that's all you'll need. But for most projects you'll need a little more.
+
+Here's a more detailed example
+
+
+    include $(POWERTRAIN)
+
+    NAME=my-application
+    INSTANCES=4
     REGISTRY=repository.cars.com
-    SLEEP=10
     DEFAULT_PORT=1337
     RUN_SCRIPT=$(CURDIR)/scripts/docker/run.sh
     VERSION_SCRIPT=$(CURDIR)/scripts/docker/var/VERSION.sh
