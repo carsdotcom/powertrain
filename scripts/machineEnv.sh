@@ -1,10 +1,10 @@
 #!/bin/bash
-#Breaking the pattern due to this script will be called thru eval thus it wont have the other items sourced in
+# Breaking the pattern due to this script will be called thru eval thus it won't be able to have the other items sourced in
 
 if [[ ! -z "$1" ]]; then
     MACHINE_NAME=$1
 else 
-    MACHINE_NAME=cars
+    MACHINE_NAME=powertrain
 fi
 
 VPN="false"

@@ -1,6 +1,6 @@
 #!/bin/bash
 if [ "$1" == "default" ]; then
-    REGISTRY=
+    PORTS=
 elif [ -n "$1" ]; then
-    REGISTRY="$1/"
+    PORTS=$1
 fi

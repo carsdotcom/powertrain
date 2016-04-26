@@ -1,6 +1,4 @@
 #!/bin/bash
-source $POWERTRAIN_DIR/var/DEFAULT_PORT.sh $1
-
 in_array() {
     local needle=$1 arr=$2
     for item in $arr; do
@@ -9,10 +7,10 @@ in_array() {
     return 1
 }
 
-PORTS=$(docker inspect --format='{{range $p, $conf := .NetworkSettings.Ports}} {{(index $conf 0).HostPort}} {{end}}' $(docker ps -q) 2> /dev/null |  tr -d ' ' | grep -v '^$')
+ALLPORTS=$(docker inspect --format='{{(index (index .NetworkSettings.Ports "'$1'/tcp") 0).HostPort}}' $(docker ps -q) 2> /dev/null |  tr -d ' ' | grep -v '^$')
 
-NEXT_PORT=$DEFAULT_PORT
+NEXT_PORT=$1
 
-while in_array $NEXT_PORT "${PORTS[@]}"; do
+while in_array $NEXT_PORT "${ALLPORTS[@]}"; do
     NEXT_PORT=$((NEXT_PORT+1))
 done

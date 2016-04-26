@@ -1,4 +1,5 @@
 #!/bin/bash
+pushd $PROJECT_DIR > /dev/null
 if [ "$1" == "all" ]; then
     VERSION=
 elif [ -z "$1" ] || [ "$1" == "default" ]; then
@@ -15,3 +16,4 @@ elif [ -z "$1" ] || [ "$1" == "default" ]; then
 elif [ -n "$1" ]; then
     VERSION=$1
 fi
+popd > /dev/null

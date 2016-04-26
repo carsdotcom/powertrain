@@ -1,6 +1,6 @@
 #!/bin/bash
 if [ "$1" == "default" ]; then
-    REGISTRY=
+    LABELS=
 elif [ -n "$1" ]; then
-    REGISTRY="$1/"
+    LABELS=$1
 fi

@@ -6,18 +6,41 @@ if [ "$(readlink "$0")" == "" ]; then
 else
     export POWERTRAIN_DIR=$(readlink "$0" | xargs dirname)
 fi
-export POWERTRAIN=$POWERTRAIN_DIR/Makefile
 
-if [ -n "$PROJECT_DIR" ] && cat "$PROJECT_DIR/Makefile" > /dev/null 2>&1; then
+export POWERTRAIN=$POWERTRAIN_DIR/powertrain.mk
+
+if [ -n "$PROJECT_DIR" ] && cat "$PROJECT_DIR/powertrain.mk" > /dev/null 2>&1; then
     export PROJECT_DIR=$PROJECT_DIR
-    printf "Using Makefile as specified by \$PROJECT_DIR"
+    FILENAME="powertrain.mk"
+    printf "Using powertrain.mk from specified \$PROJECT_DIR"
+elif [ -n "$PROJECT_DIR" ] && cat "$PROJECT_DIR/Makefile" > /dev/null 2>&1; then
+    export PROJECT_DIR=$PROJECT_DIR
+    FILENAME="Makefile"
+    printf "Using Makefile from specified \$PROJECT_DIR"
+elif cat $(pwd)/powertrain.mk > /dev/null 2>&1; then
+    export PROJECT_DIR=$(pwd)
+    FILENAME="powertrain.mk"
+    printf "Using powertrain.mk from current directory"
 elif cat $(pwd)/Makefile > /dev/null 2>&1; then
     export PROJECT_DIR=$(pwd)
+    FILENAME="Makefile"
     printf "Using Makefile from current directory"
 else
     export PROJECT_DIR=$POWERTRAIN_DIR
-    printf "Using default Makefile"
+    printf "Using default powertrain.mk"
 fi
-printf " ($PROJECT_DIR/Makefile)\n\n"
+printf " ($PROJECT_DIR/$FILENAME)\n\n"
 
+if [ "$POWERTRAIN_DIR" == "$PROJECT_DIR" ] || [ -f "$PROJECT_DIR/Makefile" ]; then
+    HAS_OWN_MAKE=true
+fi
+
+if [ "$POWERTRAIN_DIR" != "$PROJECT_DIR" ] && [ -f "$PROJECT_DIR/Makefile" ]; then
+    printf "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n"
+    printf "Using custom Makefile ($PROJECT_DIR/Makefile). This functionality is deprecated. Please review the powertrain documentation and convert your Makefile to powertrain.mk.\n"
+    printf "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n\n"
+fi
+
+[ -z $HAS_OWN_MAKE ] && cp $POWERTRAIN_DIR/Makefile $PROJECT_DIR/Makefile && echo 'include $(PROJECT_DIR)/powertrain.mk' >> $PROJECT_DIR/Makefile
 make -C $PROJECT_DIR $@ POWERTRAIN_DIR=$POWERTRAIN_DIR PROJECT_DIR=$PROJECT_DIR
+[ -z $HAS_OWN_MAKE ] && rm $PROJECT_DIR/Makefile

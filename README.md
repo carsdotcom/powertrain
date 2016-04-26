@@ -11,17 +11,17 @@ by providing a concise syntax for control flow.
 ### Powertrain does two things
 
 * The `powertrain` entrypoint script determines the run context for Make and
-runs Make using the Makefile found in that run context.
-* The default powertrain `Makefile` provides a set of default variables and
+runs Make using the `powertrain.mk` found in that run context.
+* The default powertrain `powertrain.mk` provides a set of default variables and
 targets.
 
 ### How Powertrain Determines Run Context?
 
 If a `PROJECT_DIR` environment variable has been set, it will look for a
-`Makefile` at the location specified by that variable and use that `Makefile`;
-otherwise, if the user's current working directory contains a `Makefile` it will
-use that `Makefile`; lastly, if neither of the first two conditions are met, it
-will use it's own default `Makefile`.
+`powertrain.mk` at the location specified by that variable and use that `powertrain.mk`;
+otherwise, if the user's current working directory contains a `powertrain.mk` it will
+use that `powertrain.mk`; lastly, if neither of the first two conditions are met, it
+will use it's own default `powertrain.mk`.
 
 ### What is the Powertrain Makefile?
 
@@ -62,42 +62,48 @@ __See "Usage" section below for using `powertrain` with an existing project.__
 To get started with powertrain, add a Makefile to the root of your project
 directory. This should be in the same directory as you Dockerfile.
 
-Here's an example of what the most basic powertrain Makefile file can look like:
+Here's an example of what the most basic powertrain.mk file can look like:
 
-
-    include $(POWERTRAIN)
 
     NAME=my-application
 
 
-That's all. For some basic use cases, that's all you'll need. But for most projects you'll need a little more.
+That's all. Using this configuration, powertrain will use all of it's default
+scripts to build a docker image with the project name you've delared, in this
+case `my-application`. By default the docker image will be tagged with the
+project's current git commit. For a very basic use case, this is all you'll
+need. For most projects you'll need to declare additional configuration.
 
-Here's a more detailed example
-
-
-    include $(POWERTRAIN)
+Here's a more detailed example:
 
     NAME=my-application
     INSTANCES=4
     REGISTRY=repository.cars.com
-    DEFAULT_PORT=1337
+    PORTS=1337,9081
+    VOLUMES=/app/logs:/app/logs
+    LABELS=dev,stable,routing-pool
+    ENVS=CONFIG=$(FOO)
     RUN_SCRIPT=$(CURDIR)/scripts/docker/run.sh
     VERSION_SCRIPT=$(CURDIR)/scripts/docker/var/VERSION.sh
 
 
 ## Usage
 
-Chain together the "targets" ([more on GNU Make Targets here](http://www.gnu.org/software/make/manual/make.html#Phony-Targets))
+Once you have a `powertrain.mk` file in your project root, you can chain
+together the "targets" ([more on GNU Make Targets here](http://www.gnu.org/software/make/manual/make.html#Phony-Targets))
 documented below to create simple workflows. Override variables in-line with
-each command or in your projects powertrain Makefile.
+each command or in your projects powertrain.mk.
 
 ### Basic Example
+
+This is a basic example of how to build and run your docker container.
 
     powertrain build run INSTANCES=4
 
 ### Long-Chain Example
 
-    powertrain validate-env bump-version build tag push run sleep stop-old INSTANCES=4 SLEEP=30
+    powertrain validate-env build tag push run sleep stop-old INSTANCES=4 SLEEP=30
+
 
 
 ## Targets
@@ -110,7 +116,7 @@ each command or in your projects powertrain Makefile.
 
 The above command will build an image tagged with a specified name and version
 number. If no arguments are provided, this will build an image with the name
-and version specified in your project's `Makefile`, or if not specified, the
+and version specified in your project's `powertrain.mk`, or if not specified, the
 default name and version `powertrain:latest`.
 
 The defaults can be overridden by supplying `NAME` and `VERSION` variables
@@ -127,7 +133,7 @@ inline with the command like so: `powertrain build NAME=my-application VERSION=1
 
 The above command will start a container tagged with a specified name and
 version number. If no arguments are provided, this will attempt to run an
-image with the name and version specified in your project's `Makefile`, or if
+image with the name and version specified in your project's `powertrain.mk`, or if
 not specified, the default name and version `powertrain:latest`.
 
 The defaults can be overridden by supplying the `NAME` and `VERSION` variables
@@ -144,7 +150,7 @@ inline with the command like so: `powertrain run NAME=my-application VERSION=1.2
 
 The above command will stop a container tagged with a specified name and
 version number. If no arguments are provided, this will attempt to stop any
-containers with the name and version specified in your project's `Makefile`,
+containers with the name and version specified in your project's `powertrain.mk`,
 or if not specified, the default name and version `powertrain:latest`.
 
 The defaults can be overridden by supplying the `NAME` and `VERSION` variables
@@ -167,7 +173,7 @@ The above command will stop all containers matching the target project's name.
 
 The above command will remove all containers tagged with a specified name and
 version number. If no arguments are provided, this will attempt to remove any
-containers with the name and version specified in your project's `Makefile`,
+containers with the name and version specified in your project's `powertrain.mk`,
 or if not specified, the default name and version `powertrain:latest`.
 
 The defaults can be overridden by supplying the `NAME` and `VERSION` variables
@@ -190,7 +196,7 @@ The above command will remove all containers matching the target project's name.
 
 The above command will remove all images tagged with a specified name and
 version number. If no arguments are provided, this will attempt to remove any
-images with the name and version specified in your project's `Makefile`, or if
+images with the name and version specified in your project's `powertrain.mk`, or if
 not specified, the default name and version `powertrain:latest`.
 
 The defaults can be overridden by supplying the `NAME` and `VERSION` variables

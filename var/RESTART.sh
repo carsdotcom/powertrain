@@ -1,6 +1,6 @@
 #!/bin/bash
 if [ "$1" == "default" ]; then
-    DEFAULT_PORT=
+    RESTART=
 elif [ -n "$1" ]; then
-    DEFAULT_PORT=$1
+    RESTART=$1
 fi
