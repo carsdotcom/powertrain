@@ -255,6 +255,10 @@ The above command will extract files from a docker image.
 
 For example, you might want to extract the `powertrain.mk` file from a container so you can run it with it's declared config:
 
+    powertrain extract run NAME=my-app VERSION=1.2.3 EXTRACT_SRC=/app/powertrain.mk
+
+...and maybe it has a custom run script as well which you want to use, but that run script is inside the image...
+
     powertrain extract run NAME=my-app VERSION=1.2.3 EXTRACT_SRC=/app/powertrain.mk,/app/scripts/docker/run.sh RUN_SCRIPT=$(pwd)/run.sh
 
 <br>
