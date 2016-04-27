@@ -12,6 +12,8 @@ ENVS=default
 LABELS=default
 PRE_BUILD_SCRIPT=default
 POST_BUILD_SCRIPT=default
+EXTRACT_SRC=default
+EXTRACT_DEST=default
 RUN_SCRIPT=default
 VERSION_SCRIPT=default
 BUMP_VERSION_SCRIPT=default
@@ -19,7 +21,6 @@ VALIDATE_ENV_SCRIPT=default
 MACHINE_NAME=powertrain
 MACHINE_ALIAS=dockerhost
 MACHINE_PORT=2376
-TARGET_DIR=$(PWD)
 
 .PHONY: help
 help:
@@ -29,9 +30,9 @@ help:
 run:
 	$(POWERTRAIN_DIR)/scripts/run.sh $(NAME) $(VERSION) $(REGISTRY) $(INSTANCES) $(RESTART) $(PORTS) $(VOLUMES) $(ENVS) $(LABELS) $(RUN_SCRIPT) $(VERSION_SCRIPT)
 
-.PHONY: extract-run-script
-extract-run-script:
-	$(POWERTRAIN_DIR)/scripts/extractRunScript.sh $(NAME) $(VERSION) $(REGISTRY) $(INSTANCES) $(RUN_SCRIPT) $(VERSION_SCRIPT) $(TARGET_DIR)
+.PHONY: extract
+extract:
+	$(POWERTRAIN_DIR)/scripts/extract.sh $(NAME) $(VERSION) $(REGISTRY) $(INSTANCES) $(EXTRACT_SRC) $(EXTRACT_DEST) $(VERSION_SCRIPT)
 
 .PHONY: do-build
 do-build:
