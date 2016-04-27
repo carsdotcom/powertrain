@@ -8,12 +8,14 @@ Powertrain is a wrapper around GNU Make that aims to simplify docker builds and
 deployments by enabling a simple declarative configuration for your project and
 by providing a concise syntax for control flow.
 
-### Powertrain does two things
+### What does Powertrain do?
+
+Powertrain does two things:
 
 * The `powertrain` entrypoint script determines the run context for Make and
 runs Make using the `powertrain.mk` found in that run context.
-* The default powertrain `powertrain.mk` provides a set of default variables and
-targets.
+* The default powertrain Makefile (`./powertrain.mk`) provides a set of default
+variables and targets.
 
 ### How Powertrain Determines Run Context?
 
@@ -65,45 +67,67 @@ directory. This should be in the same directory as you Dockerfile.
 Here's an example of what the most basic powertrain.mk file can look like:
 
 
-    NAME=my-application
+    NAME=my-app
 
 
 That's all. Using this configuration, powertrain will use all of it's default
 scripts to build a docker image with the project name you've delared, in this
-case `my-application`. By default the docker image will be tagged with the
+case `my-app`. By default the docker image will be tagged with the
 project's current git commit. For a very basic use case, this is all you'll
 need. For most projects you'll need to declare additional configuration.
 
-Here's a more detailed example:
+Here's an example of a slightly more complex `powertrain.mk`:
 
-    NAME=my-application
+    NAME=my-app
     INSTANCES=4
     REGISTRY=repository.cars.com
     PORTS=1337,9081
     VOLUMES=/app/logs:/app/logs
-    LABELS=dev,stable,routing-pool
-    ENVS=CONFIG=$(FOO)
-    RUN_SCRIPT=$(CURDIR)/scripts/docker/run.sh
-    VERSION_SCRIPT=$(CURDIR)/scripts/docker/var/VERSION.sh
+    LABELS=pool=my-routing-pool
+    ENVS=CONFIG=$(SOME_ENV_ON_HOST)
+    RUN_SCRIPT=$(CURDIR)/scripts/docker/run.sh   # Use $(CURDIR) for current working directory of project, $(PWD) will evalulate to the powertrain directory
 
 
 ## Usage
 
 Once you have a `powertrain.mk` file in your project root, you can chain
 together the "targets" ([more on GNU Make Targets here](http://www.gnu.org/software/make/manual/make.html#Phony-Targets))
-documented below to create simple workflows. Override variables in-line with
-each command or in your projects powertrain.mk.
+documented below to create simple workflows. Each target will be executed synchronously in the order they are declared.
+Override variables in-line with each command or in your project's `powertrain.mk`.
 
-### Basic Example
+### Examples
 
-This is a basic example of how to build and run your docker container.
+To build an image:
 
-    powertrain build run INSTANCES=4
+    powertrain build
 
-### Long-Chain Example
+To run a container:
 
-    powertrain validate-env build tag push run sleep stop-old INSTANCES=4 SLEEP=30
+    powertrain run
 
+Or, do both of the above at once:
+
+    powertrain build run
+
+To publish:
+
+    powertrain tag push VERSION=1.0.0
+
+Or, use the `publish` composite target... (this does exactly the same as the above)
+
+    powertrain publish VERSION=1.0.0
+
+To deploy:
+
+    powertrain rm-exited pull run sleep stop-old NAME=my-app VERSION=1.0.0
+
+Or, use the `deploy` composite target... (this does exactly the same as the above)
+
+    powertrain deploy NAME=my-app VERSION=1.0.0
+
+All together now...
+
+    powertrain build publish deploy INSTANCES=4
 
 
 ## Targets
@@ -119,9 +143,6 @@ number. If no arguments are provided, this will build an image with the name
 and version specified in your project's `powertrain.mk`, or if not specified, the
 default name and version `powertrain:latest`.
 
-The defaults can be overridden by supplying `NAME` and `VERSION` variables
-inline with the command like so: `powertrain build NAME=my-application VERSION=1.2.3`.
-
 
 <br>
 
@@ -136,9 +157,6 @@ version number. If no arguments are provided, this will attempt to run an
 image with the name and version specified in your project's `powertrain.mk`, or if
 not specified, the default name and version `powertrain:latest`.
 
-The defaults can be overridden by supplying the `NAME` and `VERSION` variables
-inline with the command like so: `powertrain run NAME=my-application VERSION=1.2.3`.
-
 
 <br>
 
@@ -152,9 +170,6 @@ The above command will stop a container tagged with a specified name and
 version number. If no arguments are provided, this will attempt to stop any
 containers with the name and version specified in your project's `powertrain.mk`,
 or if not specified, the default name and version `powertrain:latest`.
-
-The defaults can be overridden by supplying the `NAME` and `VERSION` variables
-inline with the command like so: `powertrain stop NAME=my-application VERSION=1.2.3`.
 
 
     powertrain stop-all
@@ -176,9 +191,6 @@ version number. If no arguments are provided, this will attempt to remove any
 containers with the name and version specified in your project's `powertrain.mk`,
 or if not specified, the default name and version `powertrain:latest`.
 
-The defaults can be overridden by supplying the `NAME` and `VERSION` variables
-inline with the command like so: `powertrain rm NAME=my-application VERSION=1.2.3`.
-
 
     powertrain rm-all
 
@@ -198,9 +210,6 @@ The above command will remove all images tagged with a specified name and
 version number. If no arguments are provided, this will attempt to remove any
 images with the name and version specified in your project's `powertrain.mk`, or if
 not specified, the default name and version `powertrain:latest`.
-
-The defaults can be overridden by supplying the `NAME` and `VERSION` variables
-inline with the command like so: `powertrain rmi NAME=my-application VERSION=1.2.3`.
 
 
     powertrain rmi-all
@@ -222,9 +231,6 @@ with a specified name and version number. If no arguments are provided, this
 will deploy an image with the name from the project's Makefile and the current
 git commit hash (assuming your project is using git for version control).
 
-The defaults can be overridden by supplying the `NAME` and `VERSION` variables
-inline with the command like so: `powertrain publish NAME=my-application VERSION=1.2.3`
-
 <br>
 
 ### Deploy
@@ -235,10 +241,21 @@ inline with the command like so: `powertrain publish NAME=my-application VERSION
 
 The above command will pull an image from your docker registry and then
 execute a rolling restart of your containers. `deploy` is a composite target
-that execute the following targets: `pull run sleep stop-old`.
+that execute the following targets: `rm-exited pull run sleep stop-old`.
 
-The defaults can be overridden by supplying the `NAME` and `VERSION` variables
-inline with the command like so: `powertrain deploy NAME=my-application VERSION=1.2.3`
+<br>
+
+### Extract
+
+
+    powertrain extract EXTRACT_SRC=<comma-separated list of files in container> EXTRACT_DEST=<directory on host where files will be copied to, defaults to working directory>
+
+
+The above command will extract files from a docker image.
+
+For example, you might want to extract the `powertrain.mk` file from a container so you can run it with it's declared config:
+
+    powertrain extract run NAME=my-app VERSION=1.2.3 EXTRACT_SRC=/app/powertrain.mk,/app/scripts/docker/run.sh RUN_SCRIPT=$(pwd)/run.sh
 
 <br>
 
@@ -273,8 +290,8 @@ rule ALIAS and the PORT number.
 ### Machine Workflow
 
     powertrain machine-create # One time deal
-    powertrain machine # Anytime switching on/off VPN. this will also provide the eval statement for setting up docker env variables
-    powertrain machine-port #Anytime needing a port opened
+    powertrain machine        # Anytime switching on/off VPN. this will also provide the eval statement for setting up docker env variables
+    powertrain machine-port   # Anytime needing a port opened
 
 
 

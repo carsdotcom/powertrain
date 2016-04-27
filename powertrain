@@ -7,6 +7,7 @@ else
     export POWERTRAIN_DIR=$(readlink "$0" | xargs dirname)
 fi
 
+export ENTRY_DIR=$(pwd)
 export POWERTRAIN=$POWERTRAIN_DIR/powertrain.mk
 
 if [ -n "$PROJECT_DIR" ] && cat "$PROJECT_DIR/powertrain.mk" > /dev/null 2>&1; then

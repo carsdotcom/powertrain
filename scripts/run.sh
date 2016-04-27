@@ -39,6 +39,9 @@ if [ -n "$LABELS" ]; then
     done
 fi
 
+# trim leading and trailing whitespace
+BASEFLAGS="$(echo -e "${BASEFLAGS}" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')"
+
 for ((i=1; i<=$INSTANCES; i++)); do
 
     PORTFLAGS=""
@@ -51,11 +54,16 @@ for ((i=1; i<=$INSTANCES; i++)); do
         done
     fi
 
+    # trim leading and trailing whitespace
+    PORTFLAGS="$(echo -e "${PORTFLAGS}" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')"
+
     if [ "$RUN_SCRIPT" == "" ] || [ "$RUN_SCRIPT" == "default" ]; then
         echo "Running default run command..."
+        echo "docker run -d $BASEFLAGS $PORTFLAGS $REGISTRY""$IMAGE"
         docker run -d $BASEFLAGS $PORTFLAGS $REGISTRY""$IMAGE
     else
         echo "Running \"$RUN_SCRIPT\"..."
+        echo "$RUN_SCRIPT $REGISTRY""$IMAGE \"$BASEFLAGS $PORTFLAGS\""
         $RUN_SCRIPT $REGISTRY""$IMAGE "$BASEFLAGS $PORTFLAGS"
     fi
 
