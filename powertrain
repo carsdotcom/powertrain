@@ -10,38 +10,40 @@ fi
 export ENTRY_DIR=$(pwd)
 export POWERTRAIN=$POWERTRAIN_DIR/powertrain.mk
 
-if [ -n "$PROJECT_DIR" ] && cat "$PROJECT_DIR/powertrain.mk" > /dev/null 2>&1; then
-    export PROJECT_DIR=$PROJECT_DIR
+if [ -n "$PT_CONTEXT" ] && cat "$PT_CONTEXT/powertrain.mk" > /dev/null 2>&1; then
+    export PT_CONTEXT=$PT_CONTEXT
     FILENAME="powertrain.mk"
-    printf "Using powertrain.mk from specified \$PROJECT_DIR"
-elif [ -n "$PROJECT_DIR" ] && cat "$PROJECT_DIR/Makefile" > /dev/null 2>&1; then
-    export PROJECT_DIR=$PROJECT_DIR
+    printf "Using powertrain.mk from specified \$PT_CONTEXT"
+elif [ -n "$PT_CONTEXT" ] && cat "$PT_CONTEXT/Makefile" > /dev/null 2>&1; then
+    export PT_CONTEXT=$PT_CONTEXT
     FILENAME="Makefile"
-    printf "Using Makefile from specified \$PROJECT_DIR"
+    printf "Using Makefile from specified \$PT_CONTEXT"
 elif cat $(pwd)/powertrain.mk > /dev/null 2>&1; then
-    export PROJECT_DIR=$(pwd)
+    export PT_CONTEXT=$(pwd)
     FILENAME="powertrain.mk"
     printf "Using powertrain.mk from current directory"
 elif cat $(pwd)/Makefile > /dev/null 2>&1; then
-    export PROJECT_DIR=$(pwd)
+    export PT_CONTEXT=$(pwd)
     FILENAME="Makefile"
     printf "Using Makefile from current directory"
 else
-    export PROJECT_DIR=$POWERTRAIN_DIR
+    export PT_CONTEXT=$POWERTRAIN_DIR
     printf "Using default powertrain.mk"
 fi
-printf " ($PROJECT_DIR/$FILENAME)\n\n"
+printf " ($PT_CONTEXT/$FILENAME)\n\n"
 
-if [ "$POWERTRAIN_DIR" == "$PROJECT_DIR" ] || [ -f "$PROJECT_DIR/Makefile" ]; then
-    HAS_OWN_MAKE=true
+if [ "$POWERTRAIN_DIR" == "$PT_CONTEXT" ] || [ -f "$PT_CONTEXT/Makefile" ]; then
+    export HAS_OWN_MAKE=true
 fi
 
-if [ "$POWERTRAIN_DIR" != "$PROJECT_DIR" ] && [ -f "$PROJECT_DIR/Makefile" ]; then
+if [ "$POWERTRAIN_DIR" != "$PT_CONTEXT" ] && [ -f "$PT_CONTEXT/Makefile" ]; then
     printf "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n"
-    printf "Using custom Makefile ($PROJECT_DIR/Makefile). This functionality is deprecated. Please review the powertrain documentation and convert your Makefile to powertrain.mk.\n"
+    printf "Using custom Makefile ($PT_CONTEXT/Makefile). This functionality is deprecated. Please review the powertrain documentation and convert your Makefile to powertrain.mk.\n"
     printf "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n\n"
 fi
 
-[ -z $HAS_OWN_MAKE ] && cp $POWERTRAIN_DIR/Makefile $PROJECT_DIR/Makefile && echo 'include $(PROJECT_DIR)/powertrain.mk' >> $PROJECT_DIR/Makefile
-make -C $PROJECT_DIR $@ POWERTRAIN_DIR=$POWERTRAIN_DIR PROJECT_DIR=$PROJECT_DIR
-[ -z $HAS_OWN_MAKE ] && rm $PROJECT_DIR/Makefile
+[ -z "$HAS_OWN_MAKE" ] && cp $POWERTRAIN_DIR/Makefile $PT_CONTEXT/Makefile && echo 'include $(PT_CONTEXT)/powertrain.mk' >> $PT_CONTEXT/Makefile
+[ -z "$HAS_OWN_MAKE" ] && [ -n "$PT_CONFIG" ] && echo 'include $(PT_CONTEXT)/powertrain/$(PT_CONFIG).mk' >> $PT_CONTEXT/Makefile
+[ -z "$HAS_OWN_MAKE" ] && [ -f "$PT_CONTEXT/powertrain/powertrain_runtime_config.mk" ] && echo 'include $(PT_CONTEXT)/powertrain/powertrain_runtime_config.mk' >> $PT_CONTEXT/Makefile
+make -C $PT_CONTEXT $@ POWERTRAIN_DIR=$POWERTRAIN_DIR PT_CONTEXT=$PT_CONTEXT
+[ -z "$HAS_OWN_MAKE" ] && rm $PT_CONTEXT/Makefile

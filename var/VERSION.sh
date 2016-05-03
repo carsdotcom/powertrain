@@ -1,5 +1,5 @@
 #!/bin/bash
-pushd $PROJECT_DIR > /dev/null
+pushd $PT_CONTEXT > /dev/null
 if [ "$1" == "all" ]; then
     VERSION=
 elif [ -z "$1" ] || [ "$1" == "default" ]; then

@@ -19,7 +19,7 @@ variables and targets.
 
 ### How Powertrain Determines Run Context?
 
-If a `PROJECT_DIR` environment variable has been set, it will look for a
+If a `PT_CONTEXT` environment variable has been set, it will look for a
 `powertrain.mk` at the location specified by that variable and use that `powertrain.mk`;
 otherwise, if the user's current working directory contains a `powertrain.mk` it will
 use that `powertrain.mk`; lastly, if neither of the first two conditions are met, it
