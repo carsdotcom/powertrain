@@ -33,7 +33,7 @@ fi
 CMD=""
 IFS=',' read -ra ASRC <<< "$EXTRACT_SRC"
 for SRC in "${ASRC[@]}"; do
-    CMD="${CMD}docker cp \$0:${EXTRACT_ROOT}${SRC} $EXTRACT_DEST;echo \$0;"
+    CMD="${CMD}docker cp \$0:${EXTRACT_ROOT}${SRC} $EXTRACT_DEST;"
 done
 
 [ -f "$EXTRACT_DEST/powertrain_runtime_config.mk" ] && rm $EXTRACT_DEST/powertrain_runtime_config.mk
@@ -41,4 +41,4 @@ done
 [ -n "$VERSION" ] && echo "VERSION=${ARGS[1]}" >> $EXTRACT_DEST/powertrain_runtime_config.mk
 [ -n "$REGISTRY" ] && echo "REGISTRY=${ARGS[2]}" >> $EXTRACT_DEST/powertrain_runtime_config.mk
 
-docker run -d $REGISTRY""$IMAGE | xargs -- bash -c "${CMD}echo \$0" | xargs docker stop
+docker run -d $REGISTRY""$IMAGE | xargs -- bash -c "${CMD} echo \$0" | xargs docker stop
