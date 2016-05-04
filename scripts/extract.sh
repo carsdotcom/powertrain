@@ -25,9 +25,7 @@ if [ -n "$EXTRACT_CONFIG" ]; then
     else
         EXTRACT_SRC="powertrain.mk"
     fi
-    if [ -n "$PT_CONFIG" ]; then
-        EXTRACT_SRC="${EXTRACT_SRC},powertrain/"
-    fi
+    EXTRACT_SRC="${EXTRACT_SRC},powertrain/"
 fi
 
 CMD=""
@@ -41,4 +39,4 @@ done
 [ -n "$VERSION" ] && echo "VERSION=${ARGS[1]}" >> $EXTRACT_DEST/powertrain_runtime_config.mk
 [ -n "$REGISTRY" ] && echo "REGISTRY=${ARGS[2]}" >> $EXTRACT_DEST/powertrain_runtime_config.mk
 
-docker run -d $REGISTRY""$IMAGE | xargs -- bash -c "${CMD} echo \$0" | xargs docker stop
+docker run -d $REGISTRY""$IMAGE | xargs -- bash -c "${CMD} echo \$0" 2>/dev/null | xargs docker stop
