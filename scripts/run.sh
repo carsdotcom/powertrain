@@ -25,6 +25,15 @@ if [ -n "$VOLUMES" ]; then
     done
 fi
 
+# if [ -n "$PT_CONFIG" ] && [ -f "${PT_CONTEXT}/powertrain/${PT_CONFIG}.env" ]; then
+#     while IFS='' read -r LINE || [[ -n "$LINE" ]]; do
+#         VARNAME=$(echo $LINE | cut -d'=' -f1)
+#         if [ -z "${!VARNAME}" ]; then
+#             $LINE
+#         fi
+#     done < "$PT_CONTEXT/powertrain/${PT_CONFIG}.env"
+# fi
+
 if [ -n "$ENVS" ]; then
     IFS=',' read -ra AENVS <<< "$ENVS"
     for EN in "${AENVS[@]}"; do
