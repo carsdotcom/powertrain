@@ -22,6 +22,9 @@ VALIDATE_ENV_SCRIPT=default
 MACHINE_NAME=powertrain
 MACHINE_ALIAS=dockerhost
 MACHINE_PORT=2376
+TAG_REGISTRY=default
+TAG_NAME=default
+TAG_VERSION=default
 
 .PHONY: help
 help:
@@ -56,7 +59,7 @@ build: pre-build do-build post-build
 
 .PHONY: tag
 tag:
-	$(POWERTRAIN_DIR)/scripts/tag.sh $(NAME) $(VERSION) $(REGISTRY) $(VERSION_SCRIPT)
+	$(POWERTRAIN_DIR)/scripts/tag.sh $(NAME) $(VERSION) $(REGISTRY) $(VERSION_SCRIPT) $(TAG_NAME) $(TAG_VERSION) $(TAG_REGISTRY)
 
 .PHONY: push
 push:

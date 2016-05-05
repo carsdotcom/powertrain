@@ -7,9 +7,9 @@ source $POWERTRAIN_DIR/var/IMAGE.sh ${ARGS[0]} ${ARGS[1]}
 source $POWERTRAIN_DIR/var/REGISTRY.sh ${ARGS[2]}
 source $POWERTRAIN_DIR/var/INSTANCES.sh ${ARGS[3]}
 source $POWERTRAIN_DIR/var/EXTRACT_ROOT.sh ${ARGS[4]}
-source $POWERTRAIN_DIR/var/EXTRACT_SRC.sh ${ARGS[5]}
-source $POWERTRAIN_DIR/var/EXTRACT_DEST.sh ${ARGS[6]}
-source $POWERTRAIN_DIR/var/EXTRACT_CONFIG.sh ${ARGS[7]}
+source $POWERTRAIN_DIR/var/DEFAULT.sh "EXTRACT_SRC" ${ARGS[5]}
+source $POWERTRAIN_DIR/var/DEFAULT.sh "EXTRACT_DEST" ${ARGS[6]} $ENTRY_DIR
+source $POWERTRAIN_DIR/var/DEFAULT.sh "EXTRACT_CONFIG" ${ARGS[7]}
 
 if [ "$EXTRACT_DEST" == "$POWERTRAIN_DIR" ]; then
     printf "\nEXTRACT_DEST cannot be powertrain directory. Exiting...\n\n"
