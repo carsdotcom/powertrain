@@ -25,15 +25,6 @@ if [ -n "$VOLUMES" ]; then
     done
 fi
 
-# if [ -n "$PT_CONFIG" ] && [ -f "${PT_CONTEXT}/powertrain/${PT_CONFIG}.env" ]; then
-#     while IFS='' read -r LINE || [[ -n "$LINE" ]]; do
-#         VARNAME=$(echo $LINE | cut -d'=' -f1)
-#         if [ -z "${!VARNAME}" ]; then
-#             $LINE
-#         fi
-#     done < "$PT_CONTEXT/powertrain/${PT_CONFIG}.env"
-# fi
-
 if [ -n "$ENVS" ]; then
     IFS=',' read -ra AENVS <<< "$ENVS"
     for EN in "${AENVS[@]}"; do
@@ -58,7 +49,15 @@ for ((i=1; i<=$INSTANCES; i++)); do
     if [ -n "$PORTS" ]; then
         IFS=',' read -ra APORTS <<< "$PORTS"
         for PORT in "${APORTS[@]}"; do
-            source $POWERTRAIN_DIR/var/NEXT_PORT.sh $PORT
+            if [[ ${PORT:0:1} == ":" ]]; then
+                NEXT_PORT=
+                PORT=${PORT:1}
+            elif [[ $PORT == *":"* ]]; then
+                source $POWERTRAIN_DIR/var/NEXT_PORT.sh $(echo $PORT | cut -d':' -f1)
+                PORT=$(echo $PORT | cut -d':' -f2)
+            else
+                source $POWERTRAIN_DIR/var/NEXT_PORT.sh $PORT
+            fi
             PORTFLAGS="$PORTFLAGS -p $NEXT_PORT:$PORT"
         done
     fi
