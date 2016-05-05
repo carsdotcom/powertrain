@@ -45,5 +45,12 @@ fi
 [ -z "$HAS_OWN_MAKE" ] && cp $POWERTRAIN_DIR/Makefile $PT_CONTEXT/Makefile && echo 'include $(PT_CONTEXT)/powertrain.mk' >> $PT_CONTEXT/Makefile
 [ -z "$HAS_OWN_MAKE" ] && [ -n "$PT_CONFIG" ] && echo 'include $(PT_CONTEXT)/powertrain/$(PT_CONFIG).mk' >> $PT_CONTEXT/Makefile
 [ -z "$HAS_OWN_MAKE" ] && [ -f "$PT_CONTEXT/powertrain_runtime_config.mk" ] && echo 'include $(PT_CONTEXT)/powertrain_runtime_config.mk' >> $PT_CONTEXT/Makefile
+
+function cleanup {
+    [ -z "$HAS_OWN_MAKE" ] && rm $PT_CONTEXT/Makefile
+}
+trap cleanup EXIT
+
 make -C $PT_CONTEXT $@ POWERTRAIN_DIR=$POWERTRAIN_DIR PT_CONTEXT=$PT_CONTEXT
-[ -z "$HAS_OWN_MAKE" ] && rm $PT_CONTEXT/Makefile
+
+
