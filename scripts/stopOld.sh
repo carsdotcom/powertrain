@@ -11,7 +11,6 @@ if [ "$OLD_INSTANCES" -ge 0 ]; then
     CONTAINERS="$(docker ps | grep "$REGISTRY""$NAME" | awk '{print $1}' | xargs docker inspect -f "{{.Created}} {{.Id}}" | sort -r | tail -n +$((INSTANCES + 1)))"
     if [ -n "$CONTAINERS" ]; then
         echo "Stopping the following containers:"
-        printf "$CONTAINERS\n"
         docker stop $(printf "$CONTAINERS" | awk '{print $2}')
     fi
 else
