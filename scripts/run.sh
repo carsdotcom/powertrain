@@ -1,5 +1,6 @@
 #!/bin/bash
 source $POWERTRAIN_DIR/var/ARGS.sh
+enforce_args_length 11
 RUN_SCRIPT=${ARGS[9]}
 VERSION_SCRIPT=${ARGS[10]}
 

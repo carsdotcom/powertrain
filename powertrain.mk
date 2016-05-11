@@ -1,30 +1,4 @@
-NAME=powertrain
-VERSION=default
-REGISTRY=default
-SEMVER=patch
-INSTANCES=1
-SLEEP=10
-RESTART=default
-DEFAULT_PORT=default # leaving this for backwards compatibility, do not use
-PORTS=$(DEFAULT_PORT)
-VOLUMES=default
-ENVS=default
-LABELS=default
-PRE_BUILD_SCRIPT=default
-POST_BUILD_SCRIPT=default
-EXTRACT_ROOT=default
-EXTRACT_SRC=default
-EXTRACT_DEST=default
-RUN_SCRIPT=default
-VERSION_SCRIPT=default
-BUMP_VERSION_SCRIPT=default
-VALIDATE_ENV_SCRIPT=default
-MACHINE_NAME=powertrain
-MACHINE_ALIAS=dockerhost
-MACHINE_PORT=2376
-TAG_REGISTRY=default
-TAG_NAME=default
-TAG_VERSION=default
+# see defaults.mk for default variable assignments
 
 .PHONY: help
 help:

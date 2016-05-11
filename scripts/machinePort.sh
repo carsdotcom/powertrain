@@ -1,5 +1,6 @@
 #!/bin/bash
 source $POWERTRAIN_DIR/var/ARGS.sh
+enforce_args_length 3
 source $POWERTRAIN_DIR/var/MACHINE_NAME.sh ${ARGS[0]}
 source $POWERTRAIN_DIR/var/MACHINE_ALIAS.sh ${ARGS[1]}
 source $POWERTRAIN_DIR/var/MACHINE_PORT.sh ${ARGS[2]}
