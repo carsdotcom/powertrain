@@ -1,4 +1,4 @@
-# see defaults.mk for default variable assignments
+include $(POWERTRAIN_DIR)/defaults.mk
 
 .PHONY: help
 help:
