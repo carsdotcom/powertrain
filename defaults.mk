@@ -19,8 +19,14 @@ endif
 ifndef SLEEP
 	SLEEP=10
 endif
+ifndef NET
+	NET=default
+endif
 ifndef RESTART
 	RESTART=default
+endif
+ifndef EXPOSE
+	EXPOSE=default
 endif
 ifndef DEFAULT_PORT
 	DEFAULT_PORT=default # leaving this for backwards compatibility, do not use

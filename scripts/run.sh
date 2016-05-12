@@ -1,22 +1,32 @@
 #!/bin/bash
 source $POWERTRAIN_DIR/var/ARGS.sh
-enforce_args_length 11
-RUN_SCRIPT=${ARGS[9]}
-VERSION_SCRIPT=${ARGS[10]}
+enforce_args_length 13
+RUN_SCRIPT=${ARGS[11]}
+VERSION_SCRIPT=${ARGS[12]}
 
 source $POWERTRAIN_DIR/var/IMAGE.sh ${ARGS[0]} ${ARGS[1]}
 source $POWERTRAIN_DIR/var/REGISTRY.sh ${ARGS[2]}
 source $POWERTRAIN_DIR/var/INSTANCES.sh ${ARGS[3]}
-source $POWERTRAIN_DIR/var/DEFAULT.sh "RESTART" ${ARGS[4]}
-source $POWERTRAIN_DIR/var/DEFAULT.sh "PORTS" ${ARGS[5]}
-source $POWERTRAIN_DIR/var/DEFAULT.sh "VOLUMES" ${ARGS[6]}
-source $POWERTRAIN_DIR/var/DEFAULT.sh "ENVS" ${ARGS[7]}
-source $POWERTRAIN_DIR/var/DEFAULT.sh "LABELS" ${ARGS[8]}
+source $POWERTRAIN_DIR/var/DEFAULT.sh "NET" ${ARGS[4]}
+source $POWERTRAIN_DIR/var/DEFAULT.sh "RESTART" ${ARGS[5]}
+source $POWERTRAIN_DIR/var/DEFAULT.sh "EXPOSE" ${ARGS[6]}
+source $POWERTRAIN_DIR/var/DEFAULT.sh "PORTS" ${ARGS[7]}
+source $POWERTRAIN_DIR/var/DEFAULT.sh "VOLUMES" ${ARGS[8]}
+source $POWERTRAIN_DIR/var/DEFAULT.sh "ENVS" ${ARGS[9]}
+source $POWERTRAIN_DIR/var/DEFAULT.sh "LABELS" ${ARGS[10]}
 
 BASEFLAGS=""
 
+if [ -n "$NET" ]; then
+    BASEFLAGS="$BASEFLAGS --net=$NET"
+fi
+
 if [ -n "$RESTART" ]; then
     BASEFLAGS="$BASEFLAGS --restart=$RESTART"
+fi
+
+if [ -n "$EXPOSE" ]; then
+    BASEFLAGS="$BASEFLAGS --expose=$EXPOSE"
 fi
 
 if [ -n "$VOLUMES" ]; then
@@ -46,6 +56,7 @@ BASEFLAGS="$(echo -e "${BASEFLAGS}" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:
 for ((i=1; i<=$INSTANCES; i++)); do
 
     PORTFLAGS=""
+    USED_PORTS=""
 
     if [ -n "$PORTS" ]; then
         IFS=',' read -ra APORTS <<< "$PORTS"
@@ -60,6 +71,7 @@ for ((i=1; i<=$INSTANCES; i++)); do
                 source $POWERTRAIN_DIR/var/NEXT_PORT.sh $PORT
             fi
             PORTFLAGS="$PORTFLAGS -p $NEXT_PORT:$PORT"
+            USED_PORTS="$USED_PORTS,$NEXT_PORT"
         done
     fi
 
@@ -73,7 +85,8 @@ for ((i=1; i<=$INSTANCES; i++)); do
     else
         echo "Running \"$RUN_SCRIPT\"..."
         echo "$RUN_SCRIPT $REGISTRY""$IMAGE \"$BASEFLAGS $PORTFLAGS\""
-        $RUN_SCRIPT $REGISTRY""$IMAGE "$BASEFLAGS $PORTFLAGS"
+        USED_PORTS=$(printf "%s\n" ${USED_PORTS[@]}|sort)
+        $RUN_SCRIPT $REGISTRY""$IMAGE "$BASEFLAGS $PORTFLAGS" "$USED_PORTS"
     fi
 
 done
