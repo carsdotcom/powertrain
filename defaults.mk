@@ -52,6 +52,9 @@ endif
 ifndef EXTRACT_DEST
 	EXTRACT_DEST=default
 endif
+ifndef EXTRACT_CONFIG
+	EXTRACT_CONFIG=default
+endif
 ifndef RUN_SCRIPT
 	RUN_SCRIPT=default
 endif
