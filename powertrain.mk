@@ -177,3 +177,7 @@ machine: machine-route machine-start machine-env
 .PHONY: deploy
 deploy: rm-exited pull run sleep stop-old
 
+.PHONY: clean-all
+clean-all:
+	$(POWERTRAIN_DIR)/scripts/cleanUp.sh
+
