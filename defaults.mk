@@ -1,3 +1,15 @@
+ifndef CONSTRAINTS
+	CONSTRAINTS=default
+endif
+ifndef PUBLISHED_PORT
+	PUBLISHED_PORT=9000:9000
+endif
+ifndef PARALLEL_UPDATES
+	PARALLEL_UPDATES=1
+endif
+ifndef UPDATE_DELAY
+	UPDATE_DELAY=5s
+endif
 ifndef VOLUMES
 	VOLUMES=default
 endif

@@ -4,6 +4,14 @@ include $(POWERTRAIN_DIR)/defaults.mk
 help:
 	@echo "Please provide one or more targets...\n"
 
+.PHONY: service-stop
+service-stop:
+	$(POWERTRAIN_DIR)/scripts/serviceStop.sh $(NAME)
+
+.PHONY: service
+service:
+	$(POWERTRAIN_DIR)/scripts/service.sh $(NAME) $(VERSION) $(REGISTRY) $(INSTANCES) $(PUBLISHED_PORT) $(ENVS) $(LABELS) $(UPDATE_DELAY) $(PARALLEL_UPDATES) $(CONSTRAINTS)
+
 .PHONY: run
 run:
 	$(POWERTRAIN_DIR)/scripts/run.sh $(NAME) $(VERSION) $(REGISTRY) $(INSTANCES) $(NET) $(RESTART) $(EXPOSE) $(PORTS) $(VOLUMES) $(ENVS) $(LABELS) $(RUN_SCRIPT) $(VERSION_SCRIPT)
