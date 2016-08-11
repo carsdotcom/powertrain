@@ -8,9 +8,9 @@ help:
 service-stop:
 	$(POWERTRAIN_DIR)/scripts/serviceStop.sh $(NAME)
 
-.PHONY: service
-service:
-	$(POWERTRAIN_DIR)/scripts/service.sh $(NAME) $(VERSION) $(REGISTRY) $(INSTANCES) $(PUBLISHED_PORT) $(ENVS) $(LABELS) $(UPDATE_DELAY) $(PARALLEL_UPDATES) $(CONSTRAINTS)
+.PHONY: service-deploy
+service-deploy:
+	$(POWERTRAIN_DIR)/scripts/service.sh $(NAME) $(VERSION) $(REGISTRY) $(INSTANCES) $(PUBLISHED_PORTS) $(ENVS) $(LABELS) $(UPDATE_DELAY) $(PARALLEL_UPDATES) $(CONSTRAINTS) $(NETWORKS)
 
 .PHONY: run
 run:

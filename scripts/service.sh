@@ -1,19 +1,34 @@
 #!/bin/bash
 source $POWERTRAIN_DIR/var/ARGS.sh
-enforce_args_length 10
+enforce_args_length 11
 
 source $POWERTRAIN_DIR/var/IMAGE.sh ${ARGS[0]} ${ARGS[1]}
 source $POWERTRAIN_DIR/var/REGISTRY.sh ${ARGS[2]}
 source $POWERTRAIN_DIR/var/INSTANCES.sh ${ARGS[3]}
-source $POWERTRAIN_DIR/var/DEFAULT.sh "PUBLISHED_PORT" ${ARGS[4]}
+source $POWERTRAIN_DIR/var/DEFAULT.sh "PUBLISHED_PORTS" ${ARGS[4]}
 source $POWERTRAIN_DIR/var/DEFAULT.sh "ENVS" ${ARGS[5]}
 source $POWERTRAIN_DIR/var/DEFAULT.sh "LABELS" ${ARGS[6]}
 source $POWERTRAIN_DIR/var/DEFAULT.sh "UPDATE_DELAY" ${ARGS[7]}
 source $POWERTRAIN_DIR/var/DEFAULT.sh "PARALLEL_UPDATES" ${ARGS[8]}
 source $POWERTRAIN_DIR/var/DEFAULT.sh "CONSTRAINTS" ${ARGS[9]}
+source $POWERTRAIN_DIR/var/DEFAULT.sh "NETWORKS" ${ARGS[10]}
 
 
 BASEFLAGS=""
+
+if [ -n "$PUBLISHED_PORTS" ]; then
+    IFS=',' read -ra APORTS <<< "$PUBLISHED_PORTS"
+    for PORT in "${APORTS[@]}"; do
+        BASEFLAGS="$BASEFLAGS -p $PORT"
+    done
+fi
+
+if [ -n "$NETWORKS" ]; then
+    IFS=',' read -ra ANETWORKS <<< "$NETWORKS"
+    for NETWORK in "${ANETWORKS[@]}"; do
+        BASEFLAGS="$BASEFLAGS --network $NETWORK"
+    done
+fi
 
 if [ -n "$ENVS" ]; then
     IFS=',' read -ra AENVS <<< "$ENVS"
@@ -27,10 +42,6 @@ if [ -n "$LABELS" ]; then
     for LABEL in "${ALABELS[@]}"; do
         BASEFLAGS="$BASEFLAGS -l $LABEL"
     done
-fi
-
-if [ -n "$PUBLISHED_PORT" ]; then
-    BASEFLAGS="$BASEFLAGS -p $PUBLISHED_PORT"
 fi
 
 if [ -n "$UPDATE_DELAY" ]; then
