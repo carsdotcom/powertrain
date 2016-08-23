@@ -4,8 +4,8 @@ include $(POWERTRAIN_DIR)/defaults.mk
 help:
 	@echo "Please provide one or more targets...\n"
 
-.PHONY: service-stop
-service-stop:
+.PHONY: service-rm
+service-rm:
 	$(POWERTRAIN_DIR)/scripts/serviceStop.sh $(NAME)
 
 .PHONY: service-deploy
@@ -183,7 +183,7 @@ machine-create: machine-do-create machine-port
 machine: machine-route machine-start machine-env
 
 .PHONY: deploy
-deploy: rm-exited pull run sleep stop-old
+deploy: pull run sleep stop-old
 
 .PHONY: clean-all
 clean-all:
