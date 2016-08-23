@@ -32,8 +32,8 @@ fi
 if [ -n "$VOLUMES" ]; then
     IFS=',' read -ra AVOLUMES <<< "$VOLUMES"
     for VOLUME in "${AVOLUMES[@]}"; do
-        ESCAPED=$(echo $EN | sed -e 's/!!/,/g')
-        BASEFLAGS="$BASEFLAGS -v $VOLUME"
+        ESCAPED=$(echo $VOLUME | sed -e 's/!!/,/g')
+        BASEFLAGS="$BASEFLAGS -v $ESCAPED"
     done
 fi
 
@@ -48,8 +48,8 @@ fi
 if [ -n "$LABELS" ]; then
     IFS=',' read -ra ALABELS <<< "$LABELS"
     for LABEL in "${ALABELS[@]}"; do
-        ESCAPED=$(echo $EN | sed -e 's/!!/,/g')
-        BASEFLAGS="$BASEFLAGS -l $LABEL"
+        ESCAPED=$(echo $LABEL | sed -e 's/!!/,/g')
+        BASEFLAGS="$BASEFLAGS -l $ESCAPED"
     done
 fi
 
