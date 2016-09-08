@@ -1,3 +1,9 @@
+ifndef LOG_DRIVER
+	LOG_DRIVER=default
+endif
+ifndef LOG_OPTS
+	LOG_OPTS=default
+endif
 ifndef NETWORKS
 	NETWORKS=default
 endif

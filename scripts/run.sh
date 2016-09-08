@@ -1,8 +1,8 @@
 #!/bin/bash
 source $POWERTRAIN_DIR/var/ARGS.sh
-enforce_args_length 13
-RUN_SCRIPT=${ARGS[11]}
-VERSION_SCRIPT=${ARGS[12]}
+enforce_args_length 15
+RUN_SCRIPT=${ARGS[13]}
+VERSION_SCRIPT=${ARGS[14]}
 
 source $POWERTRAIN_DIR/var/IMAGE.sh ${ARGS[0]} ${ARGS[1]}
 source $POWERTRAIN_DIR/var/REGISTRY.sh ${ARGS[2]}
@@ -14,6 +14,9 @@ source $POWERTRAIN_DIR/var/DEFAULT.sh "PORTS" ${ARGS[7]}
 source $POWERTRAIN_DIR/var/DEFAULT.sh "VOLUMES" ${ARGS[8]}
 source $POWERTRAIN_DIR/var/DEFAULT.sh "ENVS" ${ARGS[9]}
 source $POWERTRAIN_DIR/var/DEFAULT.sh "LABELS" ${ARGS[10]}
+source $POWERTRAIN_DIR/var/DEFAULT.sh "LOG_DRIVER" ${ARGS[11]}
+source $POWERTRAIN_DIR/var/DEFAULT.sh "LOG_OPTS" ${ARGS[12]}
+
 
 BASEFLAGS=""
 
@@ -50,6 +53,18 @@ if [ -n "$LABELS" ]; then
     for LABEL in "${ALABELS[@]}"; do
         ESCAPED=$(echo $LABEL | sed -e 's/!!/,/g')
         BASEFLAGS="$BASEFLAGS -l $ESCAPED"
+    done
+fi
+
+if [ -n "$LOG_DRIVER" ]; then
+    BASEFLAGS="$BASEFLAGS --log-driver=$LOG_DRIVER"
+fi
+
+if [ -n "$LOG_OPTS" ]; then
+    IFS=',' read -ra ALOG_OPTS <<< "$LOG_OPTS"
+    for LOG_OPT in "${ALOG_OPTS[@]}"; do
+        ESCAPED=$(echo $LOG_OPT | sed -e 's/!!/,/g')
+        BASEFLAGS="$BASEFLAGS --log-opt $ESCAPED"
     done
 fi
 
