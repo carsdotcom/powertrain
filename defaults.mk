@@ -1,3 +1,6 @@
+ifndef HOSTS
+	HOSTS=default
+endif
 ifndef LOG_DRIVER
 	LOG_DRIVER=default
 endif

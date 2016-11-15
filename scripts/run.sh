@@ -1,8 +1,8 @@
 #!/bin/bash
 source $POWERTRAIN_DIR/var/ARGS.sh
-enforce_args_length 15
-RUN_SCRIPT=${ARGS[13]}
-VERSION_SCRIPT=${ARGS[14]}
+enforce_args_length 16
+RUN_SCRIPT=${ARGS[14]}
+VERSION_SCRIPT=${ARGS[15]}
 
 source $POWERTRAIN_DIR/var/IMAGE.sh ${ARGS[0]} ${ARGS[1]}
 source $POWERTRAIN_DIR/var/REGISTRY.sh ${ARGS[2]}
@@ -16,7 +16,7 @@ source $POWERTRAIN_DIR/var/DEFAULT.sh "ENVS" ${ARGS[9]}
 source $POWERTRAIN_DIR/var/DEFAULT.sh "LABELS" ${ARGS[10]}
 source $POWERTRAIN_DIR/var/DEFAULT.sh "LOG_DRIVER" ${ARGS[11]}
 source $POWERTRAIN_DIR/var/DEFAULT.sh "LOG_OPTS" ${ARGS[12]}
-
+source $POWERTRAIN_DIR/var/DEFAULT.sh "HOSTS" ${ARGS[13]}
 
 BASEFLAGS=""
 
@@ -30,6 +30,14 @@ fi
 
 if [ -n "$EXPOSE" ]; then
     BASEFLAGS="$BASEFLAGS --expose=$EXPOSE"
+fi
+
+if [ -n "$HOSTS" ]; then
+    IFS=',' read -ra AHOSTS <<< "$HOSTS"
+    for HOST in "${AHOSTS[@]}"; do
+        ESCAPED=$(echo $HOST | sed -e 's/!!/,/g')
+        BASEFLAGS="$BASEFLAGS --add-host $ESCAPED"
+    done
 fi
 
 if [ -n "$VOLUMES" ]; then
