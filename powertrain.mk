@@ -26,7 +26,7 @@ extract-config:
 
 .PHONY: do-build
 do-build:
-	$(POWERTRAIN_DIR)/scripts/build.sh $(NAME) $(VERSION) $(REGISTRY) $(VERSION_SCRIPT) $(PT_CONTEXT)
+	$(POWERTRAIN_DIR)/scripts/build.sh $(NAME) $(VERSION) $(REGISTRY) $(DOCKERFILE) $(VERSION_SCRIPT) $(PT_CONTEXT)
 
 .PHONY: pre-build
 pre-build:

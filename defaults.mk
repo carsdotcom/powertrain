@@ -1,3 +1,6 @@
+ifndef DOCKERFILE
+	DOCKERFILE=default
+endif
 ifndef HOSTS
 	HOSTS=default
 endif
