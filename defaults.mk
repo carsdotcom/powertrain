@@ -1,3 +1,21 @@
+ifndef LIMIT_CPU
+	LIMIT_CPU=0.000
+endif
+ifndef LIMIT_MEM
+	LIMIT_MEM=0
+endif
+ifndef RESERVE_CPU
+	RESERVE_CPU=0.000
+endif
+ifndef RESERVE_MEM
+	RESERVE_MEM=0
+endif
+ifndef MOUNTS
+	MOUNTS=default
+endif
+ifndef SERVICE_MODE
+	SERVICE_MODE=replicated
+endif
 ifndef DOCKERFILE
 	DOCKERFILE=default
 endif
