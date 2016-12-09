@@ -1,3 +1,15 @@
+ifndef USR
+	USR=default
+endif
+ifndef WORK_DIR
+	WORK_DIR=default
+endif
+ifndef UPDATE_FAILURE_ACTION
+	UPDATE_FAILURE_ACTION=pause
+endif
+ifndef CONTAINER_LABELS
+	CONTAINER_LABELS=default
+endif
 ifndef LIMIT_CPU
 	LIMIT_CPU=0.000
 endif
