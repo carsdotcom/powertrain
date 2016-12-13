@@ -18,6 +18,7 @@ source $POWERTRAIN_DIR/var/DEFAULT.sh "LOG_DRIVER" ${ARGS[11]}
 source $POWERTRAIN_DIR/var/DEFAULT.sh "LOG_OPTS" ${ARGS[12]}
 source $POWERTRAIN_DIR/var/DEFAULT.sh "HOSTS" ${ARGS[13]}
 
+
 BASEFLAGS=""
 
 if [ -n "$NET" ]; then
@@ -98,11 +99,17 @@ for ((i=1; i<=$INSTANCES; i++)); do
             fi
             PORTFLAGS="$PORTFLAGS -p $NEXT_PORT:$PORT"
             USED_PORTS="$USED_PORTS,$NEXT_PORT"
+            OPTSLABLES="-l APP_NAME=$(hostname):${NEXT_PORT}:${ARGS[0]}:${ARGS[1]}" 
+
         done
     fi
 
     # trim leading and trailing whitespace
     PORTFLAGS="$(echo -e "${PORTFLAGS}" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')"
+    
+    #OPTSPORT=$(echo $PORTFLAGS| awk -F ' ' '{print $2}')
+    #OPTSLABLES="-l APP_NAME=$(hostname):${OPTSPORT}${ARGS[0]}:${ARGS[1]}" 
+    BASEFLAGS="$BASEFLAGS $OPTSLABLES"
 
     if [ "$RUN_SCRIPT" == "" ] || [ "$RUN_SCRIPT" == "default" ]; then
         echo "Running default run command..."
