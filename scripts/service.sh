@@ -258,7 +258,10 @@ if [ -n "$CONSTRAINTS" ]; then
     fi
 fi
 
-BASEFLAGS="$BASEFLAGS --name ${ARGS[0]}"
+if [ -z "$SRV_EXISTS" ];then
+    BASEFLAGS="$BASEFLAGS --name ${ARGS[0]}"
+fi
+
 # trim leading and trailing whitespace
 BASEFLAGS="$(echo -e "${BASEFLAGS}" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')"
 
