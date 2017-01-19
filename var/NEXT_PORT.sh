@@ -70,11 +70,11 @@ fi
 
 while in_array $NEXT_PORT "${ALLPORTS[@]}"; do
     NEXT_PORT=$((NEXT_PORT+1))
+    # Cannot increment to a port which is outside of the allowed ranges
     if above_range $NEXT_PORT; then
-        echo "******************** FATAL ********************"
-        echo "Powertrain cannot allocate port [$NEXT_PORT]"
-        echo "Port [$NEXT_PORT] outside of limit allowed by firewall rules."
-        echo "******************** FATAL ********************"
+        echo "FATAL : Powertrain cannot allocate port [$NEXT_PORT]"
+        echo "FATAL : Port [$NEXT_PORT] outside of limit allowed by firewall rules"
+        echo "FATAL : Contact DevOps or the Linux Engineering team to fix this"
         exit 1
     fi
 done

@@ -298,4 +298,44 @@ rule ALIAS and the PORT number.
     powertrain machine-port   # Anytime needing a port opened
 
 
+<br>
 
+### A note about Ports
+
+Firewall rules prevents us from spinning containers on random ports. Powertrain gaurds against it by *only* assiging ports which fall in the below ranges. 
+
+```
+	8000  -  8099  ( Web Apps )
+	9000  -  9099  ( RESTful Services )
+	10000 -  10099 ( Composite services )
+	1337  -  1357  ( Rendering )
+	8446  -  8461  ( Sell )
+```
+
+If and when needed, these ranges can be modified in the var/NEXT_PORT.sh file.   
+
+#### Error conditions
+
+##### Port out of range
+
+If a container is configured to run on a port outside of the allowed ranges, Powertrain will fail with the below error message. 
+
+```bash
+	Configured port [1435] is out of the below allowed ranges
+			8000  -  8099  ( Web Apps )
+			9000  -  9099  ( RESTful Services )
+			10000 -  10099 ( Composite services )
+			1337  -  1357  ( Rendering )
+			8446  -  8461  ( Sell )
+	make: *** [run] Error 1
+```
+
+##### No more ports
+
+There could be scenario where a container is configured to run an allowed range, but based on the number of already running containers in that range, Powertrain won't be able to allocate an open port in that range. In this case, it will exit with a FATAL message as below. 
+
+```bash
+		FATAL : Powertrain cannot allocate port [1358]
+	  FATAL : Port [1358] outside of limit allowed by firewall rules
+		FATAL : Contact DevOps or the Linux Engineering team to fix this
+```
