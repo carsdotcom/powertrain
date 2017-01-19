@@ -2,15 +2,6 @@
 
 VALID_PORT_RANGES=8000-8099,9000-9099,10000-10099,1337-1357,8446-8461
 
-above_range() {
-    local port=$1
-    if (( $port>8099 || $port>9099   || $port>10099  || $port>1357 || $port>8461 )); then
-        return 0
-    else
-        return 1
-    fi
-}
-
 get_initial_port() {
     # if configured port is in the allowed ranges, 
     # assign the range start boundary as the initial port
@@ -19,10 +10,10 @@ get_initial_port() {
     for RANGE in "${RANGES[@]}"; do
         IFS='-'; read -ra ARANGE <<< "$RANGE"
         if (("${ARANGE[0]}"<="$port" && "$port"<="${ARANGE[1]}")); then
-            start_port="${ARANGE[0]}"
+            echo "${ARANGE[@]}"
+            break;
         fi
     done
-    echo $start_port
 }
 
 in_array() {
@@ -61,17 +52,19 @@ Configured port [$NEXT_PORT] is out of the below allowed ranges
     8446  -  8461  ( Sell )
 EOM
 
-NEXT_PORT=$(get_initial_port "$NEXT_PORT")
+PORT_RANGE=($(get_initial_port "$NEXT_PORT"))
 
-if [ -z "$NEXT_PORT" ];then
+if [ -z "$PORT_RANGE" ];then
     echo "$INVALID_PORT_MESSAGE"
     exit 1
 fi
 
+NEXT_PORT="${PORT_RANGE[0]}"
+
 while in_array $NEXT_PORT "${ALLPORTS[@]}"; do
     NEXT_PORT=$((NEXT_PORT+1))
     # Cannot increment to a port which is outside of the allowed ranges
-    if above_range $NEXT_PORT; then
+    if (( $NEXT_PORT>"${PORT_RANGE[1]}" )); then
         echo "FATAL : Powertrain cannot allocate port [$NEXT_PORT]"
         echo "FATAL : Port [$NEXT_PORT] outside of limit allowed by firewall rules"
         echo "FATAL : Contact DevOps or the Linux Engineering team to fix this"
