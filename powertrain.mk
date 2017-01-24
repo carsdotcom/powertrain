@@ -45,7 +45,7 @@ tag:
 
 .PHONY: push
 push:
-	$(POWERTRAIN_DIR)/scripts/push.sh $(NAME) $(VERSION) $(REGISTRY) $(VERSION_SCRIPT)
+	$(POWERTRAIN_DIR)/scripts/push.sh $(NAME) $(VERSION) $(REGISTRY) $(VERSION_SCRIPT) $(TAG_NAME) $(TAG_VERSION) $(TAG_REGISTRY)
 
 .PHONY: pull
 pull:

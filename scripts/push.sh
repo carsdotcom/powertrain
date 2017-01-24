@@ -1,8 +1,14 @@
 #!/bin/bash
 source $POWERTRAIN_DIR/var/ARGS.sh
-enforce_args_length 4
+enforce_args_length 7
 VERSION_SCRIPT=${ARGS[3]}
+source $POWERTRAIN_DIR/var/NAME.sh ${ARGS[0]}
+source $POWERTRAIN_DIR/var/VERSION.sh ${ARGS[1]}
 source $POWERTRAIN_DIR/var/IMAGE.sh ${ARGS[0]} ${ARGS[1]}
 source $POWERTRAIN_DIR/var/REGISTRY.sh ${ARGS[2]}
-echo "Pushing \"$REGISTRY""$IMAGE\"..."
-docker push $REGISTRY""$IMAGE
+source $POWERTRAIN_DIR/var/DEFAULT.sh "TAG_NAME" ${ARGS[4]} $NAME
+source $POWERTRAIN_DIR/var/DEFAULT.sh "TAG_VERSION" ${ARGS[5]} $VERSION
+source $POWERTRAIN_DIR/var/DEFAULT.sh "TAG_REGISTRY" ${ARGS[6]} $REGISTRY
+source $POWERTRAIN_DIR/var/TAG_IMAGE.sh "$TAG_NAME" "$TAG_VERSION"
+echo "Pushing \"$TAG_REGISTRY""$TAG_IMAGE\"..."
+docker push $TAG_REGISTRY""$TAG_IMAGE
