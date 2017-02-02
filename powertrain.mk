@@ -80,7 +80,7 @@ stop-all:
 
 .PHONY: stop-old
 stop-old:
-	$(POWERTRAIN_DIR)/scripts/stopOld.sh $(NAME) $(VERSION) $(REGISTRY) $(VERSION_SCRIPT) $(INSTANCES)
+	$(POWERTRAIN_DIR)/scripts/stopOld.sh $(NAME) $(VERSION) $(REGISTRY) $(VERSION_SCRIPT) $(INSTANCES) $(LABELS)
 
 .PHONY: stop-other
 stop-other:
