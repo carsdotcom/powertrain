@@ -31,7 +31,7 @@ fi
 
 OLD_INSTANCES=$((TOTAL_INSTANCES - INSTANCES))
 
-if [ "$OLD_INSTANCES" -gt 0 ]; then
+if [ "$OLD_INSTANCES" -ge 0 ]; then
     CONTAINERS=""
     if [ -n "$ENV" ];then
       CONTAINERS="$(docker ps -f label=ENV="$ENV" | grep "$REGISTRY""$NAME": | awk '{print $1}' | xargs docker inspect -f "{{.Created}} {{.Id}}" | sort -r | tail -n +$((INSTANCES + 1)))"
