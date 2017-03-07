@@ -100,7 +100,7 @@ for ((i=1; i<=$INSTANCES; i++)); do
             PORTFLAGS="$PORTFLAGS -p $NEXT_PORT:$PORT"
             USED_PORTS="$USED_PORTS,$NEXT_PORT"
             OPTSBUILDVERSION=$( echo "${ARGS[1]}" | awk -F'-' '{print $1}' )
-            OPTSLABLES="-l APP_NAME=$(hostname):${NEXT_PORT}:${ARGS[0]}:${OPTSBUILDVERSION}" 
+            OPTSLABLES="-l APP_NAME=$(hostname):${NEXT_PORT}:${ARGS[0]}:${OPTSBUILDVERSION} -l APP=${ARGS[0]}" 
 
         done
     fi
