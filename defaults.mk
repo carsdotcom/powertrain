@@ -1,3 +1,6 @@
+ifndef JAVA_OPTS
+	JAVA_OPTS=default
+endif
 ifndef USR
 	USR=default
 endif

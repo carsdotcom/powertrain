@@ -1,6 +1,6 @@
 #!/bin/bash
 source $POWERTRAIN_DIR/var/ARGS.sh
-enforce_args_length 16
+enforce_args_length 17
 RUN_SCRIPT=${ARGS[14]}
 VERSION_SCRIPT=${ARGS[15]}
 
@@ -17,8 +17,9 @@ source $POWERTRAIN_DIR/var/DEFAULT.sh "LABELS" ${ARGS[10]}
 source $POWERTRAIN_DIR/var/DEFAULT.sh "LOG_DRIVER" ${ARGS[11]}
 source $POWERTRAIN_DIR/var/DEFAULT.sh "LOG_OPTS" ${ARGS[12]}
 source $POWERTRAIN_DIR/var/DEFAULT.sh "HOSTS" ${ARGS[13]}
+source $POWERTRAIN_DIR/var/DEFAULT.sh "JAVA_OPTS" ${ARGS[16]}
 
-
+JAVA_OPTIONS=""
 BASEFLAGS=""
 
 if [ -n "$NET" ]; then
@@ -31,6 +32,14 @@ fi
 
 if [ -n "$EXPOSE" ]; then
     BASEFLAGS="$BASEFLAGS --expose=$EXPOSE"
+fi
+
+if [ -n "$JAVA_OPTS" ]; then
+    IFS=',' read -ra AJAVA_OPTS <<< "$JAVA_OPTS"
+    for JAVA_OPT in "${AJAVA_OPTS[@]}"; do
+        JAVA_OPTIONS="$JAVA_OPTIONS $JAVA_OPT"
+    done
+    JAVA_OPTIONS="-e JAVA_OPTS='$(echo $JAVA_OPTIONS | sed -e 's/^ //')'"
 fi
 
 if [ -n "$HOSTS" ]; then
@@ -114,8 +123,8 @@ for ((i=1; i<=$INSTANCES; i++)); do
 
     if [ "$RUN_SCRIPT" == "" ] || [ "$RUN_SCRIPT" == "default" ]; then
         echo "Running default run command..."
-        echo "docker run -d $BASEFLAGS $PORTFLAGS $REGISTRY""$IMAGE"
-        docker run -d $BASEFLAGS $PORTFLAGS $REGISTRY""$IMAGE
+        echo "docker run -d $JAVA_OPTIONS $BASEFLAGS $PORTFLAGS $REGISTRY""$IMAGE"
+        eval docker run -d "$JAVA_OPTIONS" $BASEFLAGS $PORTFLAGS $REGISTRY""$IMAGE
     else
         echo "Running \"$RUN_SCRIPT\"..."
         echo "$RUN_SCRIPT $REGISTRY""$IMAGE \"$BASEFLAGS $PORTFLAGS\""
