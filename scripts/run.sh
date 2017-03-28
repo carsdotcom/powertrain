@@ -93,6 +93,8 @@ for ((i=1; i<=$INSTANCES; i++)); do
 
     PORTFLAGS=""
     USED_PORTS=""
+    OPTSLABLES=""
+
 
     if [ -n "$PORTS" ]; then
         IFS=',' read -ra APORTS <<< "$PORTS"
