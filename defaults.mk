@@ -1,6 +1,12 @@
 ifndef JAVA_OPTS
 	JAVA_OPTS=default
 endif
+ifndef RUN_MODE
+	RUN_MODE=default
+endif
+ifndef ENTRY_POINT
+	ENTRY_POINT=default
+endif
 ifndef USR
 	USR=default
 endif
