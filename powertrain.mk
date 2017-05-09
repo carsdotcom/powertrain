@@ -14,7 +14,7 @@ service-deploy:
 
 .PHONY: run
 run:
-	$(POWERTRAIN_DIR)/scripts/run.sh $(NAME) $(VERSION) $(REGISTRY) $(INSTANCES) $(NET) $(RESTART) $(EXPOSE) $(PORTS) $(VOLUMES) $(ENVS) $(LABELS) $(LOG_DRIVER) $(LOG_OPTS) $(HOSTS) $(RUN_SCRIPT) $(VERSION_SCRIPT) $(JAVA_OPTS) $(RUN_MODE) $(ENTRY_POINT)
+	$(POWERTRAIN_DIR)/scripts/run.sh $(NAME) $(VERSION) $(REGISTRY) $(INSTANCES) $(NET) $(RESTART) $(EXPOSE) $(PORTS) $(VOLUMES) $(ENVS) $(LABELS) $(LOG_DRIVER) $(LOG_OPTS) $(HOSTS) $(RUN_SCRIPT) $(VERSION_SCRIPT) $(JAVA_OPTS) 
 
 .PHONY: extract
 extract:
@@ -150,7 +150,7 @@ rmi-dangling:
 clean: rm-exited rmi-dangling
 
 .PHONY: machine-route
-machine-route:
+machine-route: 
 	$(POWERTRAIN_DIR)/scripts/machineRoute.sh
 
 .PHONY: machine-do-create
@@ -177,7 +177,7 @@ machine-modify-port:
 machine-port: machine-stop machine-modify-port machine-start
 
 .PHONY: machine-create
-machine-create: machine-do-create machine-port
+machine-create: machine-do-create machine-port 
 
 .PHONY: machine
 machine: machine-route machine-start machine-env
@@ -189,22 +189,3 @@ deploy: pull run sleep stop-old
 clean-all:
 	$(POWERTRAIN_DIR)/scripts/cleanUp.sh
 
-.PHONY: logs
-logs:
-	$(POWERTRAIN_DIR)/scripts/logs.sh $(NAME) $(VERSION) $(REGISTRY) $(VERSION_SCRIPT)
-
-.PHONY: attach
-attach:
-		$(POWERTRAIN_DIR)/scripts/attach.sh $(NAME) $(VERSION) $(REGISTRY) $(VERSION_SCRIPT)
-
-.PHONY: status
-status:
-		$(POWERTRAIN_DIR)/scripts/status.sh $(NAME) $(VERSION) $(REGISTRY) $(VERSION_SCRIPT)
-
-.PHONY: exit-code
-exit-code:
-		$(POWERTRAIN_DIR)/scripts/exitCode.sh $(NAME) $(VERSION) $(REGISTRY) $(VERSION_SCRIPT)
-
-.PHONY: exec
-exec:
-		$(POWERTRAIN_DIR)/scripts/exec.sh $(NAME) $(VERSION) $(REGISTRY) $(VERSION_SCRIPT)

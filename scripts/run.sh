@@ -1,6 +1,6 @@
 #!/bin/bash
 source $POWERTRAIN_DIR/var/ARGS.sh
-enforce_args_length 19
+enforce_args_length 17
 RUN_SCRIPT=${ARGS[14]}
 VERSION_SCRIPT=${ARGS[15]}
 
@@ -18,23 +18,9 @@ source $POWERTRAIN_DIR/var/DEFAULT.sh "LOG_DRIVER" ${ARGS[11]}
 source $POWERTRAIN_DIR/var/DEFAULT.sh "LOG_OPTS" ${ARGS[12]}
 source $POWERTRAIN_DIR/var/DEFAULT.sh "HOSTS" ${ARGS[13]}
 source $POWERTRAIN_DIR/var/DEFAULT.sh "JAVA_OPTS" ${ARGS[16]}
-source $POWERTRAIN_DIR/var/DEFAULT.sh "RUN_MODE" ${ARGS[17]}
-source $POWERTRAIN_DIR/var/DEFAULT.sh "ENTRY_POINT" ${ARGS[18]}
 
 JAVA_OPTIONS=""
 BASEFLAGS=""
-
-if [ "$RUN_MODE" == "foreground" ]; then
-    RUN_MODE="-i"
-elif [ "$RUN_MODE" == "interactive" ]; then
-    RUN_MODE="-it"
-else
-    RUN_MODE="-d"
-fi
-
-if [ -n "$ENTRY_POINT" ]; then
-    BASEFLAGS="$BASEFLAGS --entrypoint=$ENTRY_POINT"
-fi
 
 if [ -n "$NET" ]; then
     BASEFLAGS="$BASEFLAGS --net=$NET"
@@ -125,22 +111,22 @@ for ((i=1; i<=$INSTANCES; i++)); do
             PORTFLAGS="$PORTFLAGS -p $NEXT_PORT:$PORT"
             USED_PORTS="$USED_PORTS,$NEXT_PORT"
             OPTSBUILDVERSION=$( echo "${ARGS[1]}" | awk -F'-' '{print $1}' )
-            OPTSLABLES="-l APP_NAME=$(hostname):${NEXT_PORT}:${ARGS[0]}:${OPTSBUILDVERSION} -l APP=${ARGS[0]}"
+            OPTSLABLES="-l APP_NAME=$(hostname):${NEXT_PORT}:${ARGS[0]}:${OPTSBUILDVERSION} -l APP=${ARGS[0]}" 
 
         done
     fi
 
     # trim leading and trailing whitespace
     PORTFLAGS="$(echo -e "${PORTFLAGS}" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')"
-
+    
     #OPTSPORT=$(echo $PORTFLAGS| awk -F ' ' '{print $2}')
-    #OPTSLABLES="-l APP_NAME=$(hostname):${OPTSPORT}${ARGS[0]}:${ARGS[1]}"
+    #OPTSLABLES="-l APP_NAME=$(hostname):${OPTSPORT}${ARGS[0]}:${ARGS[1]}" 
     BASEFLAGS="$BASEFLAGS $OPTSLABLES"
 
     if [ "$RUN_SCRIPT" == "" ] || [ "$RUN_SCRIPT" == "default" ]; then
         echo "Running default run command..."
-        echo "docker run $RUN_MODE $JAVA_OPTIONS $BASEFLAGS $PORTFLAGS $REGISTRY""$IMAGE"
-        eval docker run $RUN_MODE "$JAVA_OPTIONS" $BASEFLAGS $PORTFLAGS $REGISTRY""$IMAGE
+        echo "docker run -d $JAVA_OPTIONS $BASEFLAGS $PORTFLAGS $REGISTRY""$IMAGE"
+        eval docker run -d "$JAVA_OPTIONS" $BASEFLAGS $PORTFLAGS $REGISTRY""$IMAGE
     else
         echo "Running \"$RUN_SCRIPT\"..."
         echo "$RUN_SCRIPT $REGISTRY""$IMAGE \"$BASEFLAGS $PORTFLAGS\""
