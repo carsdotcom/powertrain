@@ -86,7 +86,8 @@ Here's an example of a slightly more complex `powertrain.mk`:
     LABELS=pool=my-routing-pool
     ENVS=CONFIG=$(SOME_ENV_ON_HOST)
     RUN_SCRIPT=$(CURDIR)/scripts/docker/run.sh   # Use $(CURDIR) for current working directory of project, $(PWD) will evalulate to the powertrain directory
-
+    RUN_MODE=foreground # Use to change run mode [foreground|interactive|detached (default)]
+    ENTRY_POINT=bash # Use to override the entrypoint
 
 ## Usage
 
@@ -263,6 +264,56 @@ For example, you might want to extract the `powertrain.mk` file from a container
 
 <br>
 
+### Attach to Running Container
+
+
+    powertrain attach
+
+
+The above command will attached to the most recently executed and still running container.
+
+<br>
+
+### Attach to Running Container in Interactive Mode
+
+
+    powertrain exec
+
+
+The above command will attached to the most recently executed and still running container in interactive mode for debugging purposes.
+
+<br>
+
+### View Container Logs
+
+
+    powertrain logs
+
+
+The above command will show the logs from the most recently executed container.
+
+<br>
+
+### View Container Status
+
+
+    powertrain status
+
+
+The above command will show the exit code from the most recently executed container.
+
+<br>
+
+### View Container Exit Code
+
+
+    powertrain exit-code
+
+
+The above command will show the exit code from the most recently executed container.
+
+<br>
+
 ### Machine Commands
 
 
@@ -302,7 +353,7 @@ rule ALIAS and the PORT number.
 
 ### [A note about Ports](#markdown-header-a-note-about-ports)
 
-Firewall rules prevents us from spinning containers on random ports. Powertrain gaurds against it by *only* assiging ports which fall in the below ranges. 
+Firewall rules prevents us from spinning containers on random ports. Powertrain gaurds against it by *only* assiging ports which fall in the below ranges.
 
 ```
 	8000  -  8099  ( Web Apps )
@@ -318,7 +369,7 @@ If and when needed, these ranges can be modified in the var/NEXT_PORT.sh file.
 
 ##### Port out of range
 
-If a container is configured to run on a port outside of the allowed ranges, Powertrain will fail with the below error message. 
+If a container is configured to run on a port outside of the allowed ranges, Powertrain will fail with the below error message.
 
 ```bash
 	Configured port [1435] is out of the below allowed ranges
@@ -332,7 +383,7 @@ If a container is configured to run on a port outside of the allowed ranges, Pow
 
 ##### No more ports
 
-There could be scenario where a container is configured to run an allowed range, but based on the number of already running containers in that range, Powertrain won't be able to allocate an open port in that range. In this case, it will exit with a FATAL message as below. 
+There could be scenario where a container is configured to run an allowed range, but based on the number of already running containers in that range, Powertrain won't be able to allocate an open port in that range. In this case, it will exit with a FATAL message as below.
 
 ```bash
 		FATAL : Powertrain cannot allocate port [1358]
