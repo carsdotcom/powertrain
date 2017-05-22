@@ -51,7 +51,8 @@ fi
 if [ -n "$JAVA_OPTS" ]; then
     IFS=',' read -ra AJAVA_OPTS <<< "$JAVA_OPTS"
     for JAVA_OPT in "${AJAVA_OPTS[@]}"; do
-        JAVA_OPTIONS="$JAVA_OPTIONS $JAVA_OPT"
+        ESCAPED=$(echo $JAVA_OPT | sed -e 's/!!/,/g')
+        JAVA_OPTIONS="$JAVA_OPTIONS $ESCAPED"
     done
     JAVA_OPTIONS="-e JAVA_OPTS='$(echo $JAVA_OPTIONS | sed -e 's/^ //')'"
 fi
